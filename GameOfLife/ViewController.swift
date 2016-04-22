@@ -44,7 +44,7 @@ class ViewController: UIViewController {
     
     var gridView = BasicMatrixView() {
         didSet {
-            gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("stopAnimation")))
+            gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
         }
     }
     var editingGridView = BasicMatrixView()
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
         view.addSubview(editingGridView)
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[editingGridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["editingGridView" : editingGridView]))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[editingGridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["editingGridView" : editingGridView]))
-        editingGridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("tap:")))
+        editingGridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tap(_:))))
         
         seedMatrix = Matrix(rows: Int(self.view.frame.width / 10), columns: Int(self.view.frame.height / 10))
         editingGridView.matrix = seedMatrix
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         if gridScreen == UIScreen.mainScreen() {
             gridView.hidden = false
         }
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("nextGeneration"), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.nextGeneration), userInfo: nil, repeats: true)
     }
     
     func stopAnimation() {
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         timer = nil
         idleTimer?.invalidate()
         idleTimer = nil
-        idleTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: Selector("startAnimation"), userInfo: nil, repeats: true)
+        idleTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(ViewController.startAnimation), userInfo: nil, repeats: true)
         if gridScreen == UIScreen.mainScreen() {
             gridView.hidden = true
         }
@@ -117,9 +117,9 @@ class ViewController: UIViewController {
 extension ViewController {
     
     func setupOutputScreen() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "screenDidConnect:", name: UIScreenDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "screenDidDisconnect:", name: UIScreenDidDisconnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "screenModeDidChange:", name: UIScreenModeDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidConnect(_:)), name: UIScreenDidConnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidDisconnect(_:)), name: UIScreenDidDisconnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenModeDidChange(_:)), name: UIScreenModeDidChangeNotification, object: nil)
         // Setup screen mirroring for an existing screen
         let connectedScreens = UIScreen.screens()
         if connectedScreens.count > 1 {

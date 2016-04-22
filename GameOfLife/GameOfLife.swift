@@ -65,15 +65,15 @@ extension Matrix {
     func numberOfNeighbours(row: Int, column: Int) -> Int {
         var neighbours = 0
         
-        if column > 0 &&            self[row, column - 1] { neighbours++ }
-        if column < columns - 1 &&  self[row, column + 1] { neighbours++ }
-        if row > 0 &&               self[row - 1, column] { neighbours++ }
-        if row < rows - 1 &&        self[row + 1, column] { neighbours++ }
+        if column > 0 &&            self[row, column - 1] { neighbours += 1 }
+        if column < columns - 1 &&  self[row, column + 1] { neighbours += 1 }
+        if row > 0 &&               self[row - 1, column] { neighbours += 1 }
+        if row < rows - 1 &&        self[row + 1, column] { neighbours += 1 }
         
-        if column > 0 && row > 0 &&                   self[row - 1, column - 1] { neighbours++ }
-        if column < columns - 1 && row > 0 &&         self[row - 1, column + 1] { neighbours++ }
-        if column < columns - 1 && row < rows - 1 &&  self[row + 1, column + 1] { neighbours++ }
-        if column > 0 && row < rows - 1 &&            self[row + 1, column - 1] { neighbours++ }
+        if column > 0 && row > 0 &&                   self[row - 1, column - 1] { neighbours += 1 }
+        if column < columns - 1 && row > 0 &&         self[row - 1, column + 1] { neighbours += 1 }
+        if column < columns - 1 && row < rows - 1 &&  self[row + 1, column + 1] { neighbours += 1 }
+        if column > 0 && row < rows - 1 &&            self[row + 1, column - 1] { neighbours += 1 }
         
         
         return neighbours
