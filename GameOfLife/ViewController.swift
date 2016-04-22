@@ -16,8 +16,7 @@ class ViewController: UIViewController {
                 gridView.removeFromSuperview()
             }
             
-            gridView = ZoomableMatrixView()
-            gridView.mode = .Display
+            gridView = GOLPlayerView()
             gridView.translatesAutoresizingMaskIntoConstraints = false
             
             if gridScreen != .mainScreen() {
@@ -50,15 +49,18 @@ class ViewController: UIViewController {
     }
     var gridWindow: UIWindow!
     
-    var seedMatrix = Matrix(rows: 50, columns: 50)
+    var seedMatrix = Matrix(width: 50, height: 50) {
+        didSet {
+            
+        }
+    }
     var currentMatrix: Matrix!
     
-    var gridView: ZoomableMatrixView! {
+    var gridView: GOLPlayerView! {
         didSet {
             gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
         }
     }
-    var editingGridView = ZoomableMatrixView()
     
     var timer: NSTimer?
     var idleTimer: NSTimer?
@@ -70,6 +72,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .blackColor()
         
+        // ** Scroll view **
         scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.minimumZoomScale = 1
@@ -78,21 +81,29 @@ class ViewController: UIViewController {
         view.addSubview(scrollView)
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
-        scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.columns) * 15, CGFloat(seedMatrix.rows) * 15)
+        scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
         
         let contectFrame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
         
+        // ** View to zoom **
         let zoomView = UIView()
         zoomView.frame = contectFrame
         scrollView.addSubview(zoomView)
         
-        editingGridView.frame = contectFrame
-        editingGridView.mode = .Edit
-        zoomView.addSubview(editingGridView)
-        editingGridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tap(_:))))
-        
+        // ** Editor **
+        let editingGridView = ZoomableMatrixView()
         editingGridView.matrix = seedMatrix
+        editingGridView.matrixUpdated = { matrix in
+            self.seedMatrix = matrix
+            self.stopAnimation()
+            if self.gridScreen != UIScreen.mainScreen() {
+                self.startAnimation()
+            }
+        }
+        editingGridView.frame = contectFrame
+        zoomView.addSubview(editingGridView)
         
+        // ** Minimap **
         minimap = MiniMapView()
         minimap.alpha = 0.6
         minimap.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +111,7 @@ class ViewController: UIViewController {
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[map(==60)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[map(==60)]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
         
+        // ** Setup screen **
         gridScreen = UIScreen.mainScreen()
     }
     
@@ -133,19 +145,62 @@ class ViewController: UIViewController {
     }
     
     func nextGeneration() {
-        currentMatrix = currentMatrix.getNextGeneration()
+        currentMatrix = currentMatrix.incrementedGeneration()
         gridView.matrix = currentMatrix
         // TODO: Add a comparator in order to know if the simulation is halted (lastgen == gen)
     }
     
-    func tap(gesture: UITapGestureRecognizer) {
-        if let position = editingGridView.cellPointAtPoint(gesture.locationInView(gesture.view!), rect: self.view.frame) {
-            stopAnimation()
-            seedMatrix[Int(position.y), Int(position.x)] = !seedMatrix[Int(position.y), Int(position.x)]
-            editingGridView.matrix = seedMatrix
-            if gridScreen != UIScreen.mainScreen() {
-                startAnimation()
+    func setupOutputScreen() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidConnect(_:)), name: UIScreenDidConnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidDisconnect(_:)), name: UIScreenDidDisconnectNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenModeDidChange(_:)), name: UIScreenModeDidChangeNotification, object: nil)
+        // Setup screen mirroring for an existing screen
+        let connectedScreens = UIScreen.screens()
+        if connectedScreens.count > 1 {
+            if let screen = connectedScreens.filter({ x in x != UIScreen.mainScreen() }).first {
+                setupMirroringForScreen(screen)
             }
+        }
+    }
+    
+    func setupMirroringForScreen(screen: UIScreen) {
+        // Find max resolution
+        var max: (CGFloat, CGFloat) = (0.0, 0.0)
+        var maxScreenMode: UIScreenMode?
+        
+        for current in screen.availableModes {
+            if maxScreenMode == nil || current.size.height > max.1 || current.size.width > max.0 {
+                max = (current.size.width, current.size.height)
+                maxScreenMode = current
+            }
+        }
+        
+        screen.currentMode = maxScreenMode
+        
+        self.gridScreen = screen
+    }
+    
+    func disableMirroringOnCurrentScreen() {
+        self.gridScreen = UIScreen.mainScreen()
+    }
+    
+    func screenDidConnect(notification: NSNotification) {
+        print("A screen connected: \(notification.object)")
+        if let screen = notification.object as? UIScreen {
+            setupMirroringForScreen(screen)
+        }
+    }
+    
+    func screenDidDisconnect(notification: NSNotification) {
+        print("A screen was disconnected: \(notification.object)")
+        disableMirroringOnCurrentScreen()
+    }
+    
+    func screenModeDidChange(notification: NSNotification) {
+        print("A screen mode changed: \(notification.object)")
+        disableMirroringOnCurrentScreen()
+        if let screen = notification.object as? UIScreen {
+            setupMirroringForScreen(screen)
         }
     }
     
@@ -154,6 +209,20 @@ class ViewController: UIViewController {
         viewport.origin.x = scrollView.contentOffset.x
         viewport.origin.y = scrollView.contentOffset.y
         minimap.renderMiniMap(viewport, worldSize: scrollView.contentSize)
+    }
+}
+
+extension ViewController: UIScrollViewDelegate {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return scrollView.subviews.first!
+    }
+    
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        updateMiniMap()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        updateMiniMap()
     }
 }
 
@@ -205,75 +274,3 @@ class MiniMapView: UIView {
         return false
     }
 }
-
-extension ViewController: UIScrollViewDelegate {
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return scrollView.subviews.first!
-    }
-    
-    func scrollViewDidZoom(scrollView: UIScrollView) {
-        updateMiniMap()
-    }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        updateMiniMap()
-    }
-}
-
-extension ViewController {
-    
-    func setupOutputScreen() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidConnect(_:)), name: UIScreenDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidDisconnect(_:)), name: UIScreenDidDisconnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenModeDidChange(_:)), name: UIScreenModeDidChangeNotification, object: nil)
-        // Setup screen mirroring for an existing screen
-        let connectedScreens = UIScreen.screens()
-        if connectedScreens.count > 1 {
-            if let screen = connectedScreens.filter({ x in x != UIScreen.mainScreen() }).first {
-                setupMirroringForScreen(screen)
-            }
-        }
-    }
-    
-    func setupMirroringForScreen(screen: UIScreen) {
-        // Find max resolution
-        var max: (CGFloat, CGFloat) = (0.0, 0.0)
-        var maxScreenMode: UIScreenMode?
-        
-        for current in screen.availableModes {
-            if maxScreenMode == nil || current.size.height > max.1 || current.size.width > max.0 {
-                max = (current.size.width, current.size.height)
-                maxScreenMode = current
-            }
-        }
-        
-        screen.currentMode = maxScreenMode
-        
-        self.gridScreen = screen
-    }
-    
-    func disableMirroringOnCurrentScreen() {
-        self.gridScreen = UIScreen.mainScreen()
-    }
-
-    func screenDidConnect(notification: NSNotification) {
-        print("A screen connected: \(notification.object)")
-        if let screen = notification.object as? UIScreen {
-            setupMirroringForScreen(screen)
-        }
-    }
-    
-    func screenDidDisconnect(notification: NSNotification) {
-        print("A screen was disconnected: \(notification.object)")
-        disableMirroringOnCurrentScreen()
-    }
-    
-    func screenModeDidChange(notification: NSNotification) {
-        print("A screen mode changed: \(notification.object)")
-        disableMirroringOnCurrentScreen()
-        if let screen = notification.object as? UIScreen {
-            setupMirroringForScreen(screen)
-        }
-    }
-}
-
