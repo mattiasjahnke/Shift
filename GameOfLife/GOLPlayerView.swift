@@ -13,8 +13,8 @@ private class GOLPlayerLayer: CATiledLayer {
     }
 }
 
-class GOLPlayerView: UIView {
-    var matrix: Matrix? { didSet { setNeedsDisplay() } }
+class GOLPlayerView<MatrixType: GameOfLifeMatrix>: UIView {
+    var matrix: MatrixType? { didSet { setNeedsDisplay() } }
     
     override class func layerClass() -> AnyClass {
         return GOLPlayerLayer.self

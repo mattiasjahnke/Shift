@@ -14,10 +14,10 @@ class MyFadeLayer: CATiledLayer {
     }
 }
 
-class ZoomableMatrixView: UIView {
+class ZoomableMatrixView<MatrixType: GameOfLifeMatrix>: UIView {
     
-    var matrix: Matrix? { didSet { setNeedsDisplay() } }
-    var matrixUpdated: ((Matrix) -> ())?
+    var matrix: MatrixType? { didSet { setNeedsDisplay() } }
+    var matrixUpdated: ((MatrixType) -> ())?
     
     override class func layerClass() -> AnyClass {
         return MyFadeLayer.self

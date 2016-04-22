@@ -72,8 +72,18 @@ extension GameOfLifeMatrix {
     }
 }
 
+// MARK: Hashmap implemention of a Matrix
 
-// MARK: Basic implementation of a Matrix, a two-dimensional array
+
+
+
+
+
+
+
+
+
+// MARK: Basic implementation of a Matrix
 struct Matrix: GameOfLifeMatrix {
     private(set) var height: Int
     private(set) var width: Int

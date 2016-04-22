@@ -17,6 +17,7 @@ class ViewController: UIViewController {
             }
             
             gridView = GOLPlayerView()
+            gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
             gridView.translatesAutoresizingMaskIntoConstraints = false
             
             if gridScreen != .mainScreen() {
@@ -49,18 +50,10 @@ class ViewController: UIViewController {
     }
     var gridWindow: UIWindow!
     
-    var seedMatrix = Matrix(width: 50, height: 50) {
-        didSet {
-            
-        }
-    }
+    var seedMatrix = Matrix(width: 50, height: 50)
     var currentMatrix: Matrix!
-    
-    var gridView: GOLPlayerView! {
-        didSet {
-            gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
-        }
-    }
+    let editingGridView = ZoomableMatrixView<Matrix>()
+    var gridView: GOLPlayerView<Matrix>!
     
     var timer: NSTimer?
     var idleTimer: NSTimer?
@@ -91,7 +84,6 @@ class ViewController: UIViewController {
         scrollView.addSubview(zoomView)
         
         // ** Editor **
-        let editingGridView = ZoomableMatrixView()
         editingGridView.matrix = seedMatrix
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
