@@ -35,8 +35,31 @@ struct Matrix {
     }
 }
 
+extension Matrix: Equatable {}
+
+// MARK: Equatable
+
+func ==(lhs: Matrix, rhs: Matrix) -> Bool {
+    return lhs.grid == rhs.grid
+}
+
 // MARK: Extension to Matrix that adds "Game Of Life"-logic
 extension Matrix {
+    
+    var generations: Int {
+        var gen = 0
+        var curr = self
+        while true {
+            let next = curr.getNextGeneration()
+            if next == curr {
+                break
+            }
+            curr = next
+            gen += 1
+        }
+        return gen
+    }
+    
     func getNextGeneration() -> Matrix {
         var next = Matrix(rows: self.rows, columns: self.columns)
         

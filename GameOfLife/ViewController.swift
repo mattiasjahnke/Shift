@@ -10,60 +10,95 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var gridScreen = UIScreen.mainScreen() {
+    var gridScreen: UIScreen! {
         didSet {
-            gridView.removeFromSuperview()
+            if gridView != nil {
+                gridView.removeFromSuperview()
+            }
             
-            gridView = BasicMatrixView()
+            gridView = ZoomableMatrixView()
+            gridView.mode = .Display
+            gridView.translatesAutoresizingMaskIntoConstraints = false
             
-            if gridScreen != UIScreen.mainScreen() {
+            if gridScreen != .mainScreen() {
                 gridWindow = UIWindow(frame: gridScreen.bounds)
-                gridWindow!.layer.contentsGravity = kCAGravityResizeAspect
-                gridWindow!.screen = gridScreen
-                gridWindow!.hidden = false
+                gridWindow.layer.contentsGravity = kCAGravityResizeAspect
+                gridWindow.screen = gridScreen
+                gridWindow.hidden = false
+                
+                gridWindow.addSubview(gridView)
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridView, attribute: .Height, multiplier: 1, constant: 0))
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterX, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterX, multiplier: 1, constant: 0))
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterY, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterY, multiplier: 1, constant: 0))
+                
+                if gridWindow.frame.height < gridWindow.frame.width {
+                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Height, relatedBy: .Equal, toItem: gridWindow, attribute: .Height, multiplier: 1, constant: 0))
+                } else {
+                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridWindow, attribute: .Width, multiplier: 1, constant: 0))
+                }
             } else {
                 gridWindow = nil
                 gridView.hidden = true
+                
+                let hostView = scrollView.subviews.first!
+                
+                hostView.addSubview(gridView)
+                hostView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
+                hostView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
             }
-            
-            gridView.mode = .Display
-            
-            let gridHostView = gridWindow ?? self.view
-            
-            gridView.translatesAutoresizingMaskIntoConstraints = false
-            gridHostView!.addSubview(gridView)
-            gridHostView!.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
-            gridHostView!.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
-            
-            gridView.matrix = seedMatrix
         }
     }
-    var gridWindow: UIWindow?
+    var gridWindow: UIWindow!
     
-    var seedMatrix = Matrix(rows: 30, columns: 30)
+    var seedMatrix = Matrix(rows: 50, columns: 50)
+    var currentMatrix: Matrix!
     
-    var gridView = BasicMatrixView() {
+    var gridView: ZoomableMatrixView! {
         didSet {
             gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
         }
     }
-    var editingGridView = BasicMatrixView()
+    var editingGridView = ZoomableMatrixView()
     
     var timer: NSTimer?
     var idleTimer: NSTimer?
+    
+    var scrollView: UIScrollView!
+    var minimap: MiniMapView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .blackColor()
         
-        editingGridView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.minimumZoomScale = 1
+        scrollView.maximumZoomScale = 3
+        scrollView.delegate = self
+        view.addSubview(scrollView)
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
+        scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.columns) * 15, CGFloat(seedMatrix.rows) * 15)
+        
+        let contectFrame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
+        
+        let zoomView = UIView()
+        zoomView.frame = contectFrame
+        scrollView.addSubview(zoomView)
+        
+        editingGridView.frame = contectFrame
         editingGridView.mode = .Edit
-        view.addSubview(editingGridView)
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[editingGridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["editingGridView" : editingGridView]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[editingGridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["editingGridView" : editingGridView]))
+        zoomView.addSubview(editingGridView)
         editingGridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.tap(_:))))
         
-        seedMatrix = Matrix(rows: Int(self.view.frame.width / 10), columns: Int(self.view.frame.height / 10))
         editingGridView.matrix = seedMatrix
+        
+        minimap = MiniMapView()
+        minimap.alpha = 0.6
+        minimap.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(minimap)
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[map(==60)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[map(==60)]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
         
         gridScreen = UIScreen.mainScreen()
     }
@@ -78,7 +113,8 @@ class ViewController: UIViewController {
         idleTimer = nil
         timer?.invalidate()
         timer = nil
-        gridView.matrix = seedMatrix
+        currentMatrix = seedMatrix
+        gridView.matrix = currentMatrix
         if gridScreen == UIScreen.mainScreen() {
             gridView.hidden = false
         }
@@ -97,8 +133,8 @@ class ViewController: UIViewController {
     }
     
     func nextGeneration() {
-        //let lastGen = gridView.matrix
-        gridView.matrix = gridView.matrix!.getNextGeneration()
+        currentMatrix = currentMatrix.getNextGeneration()
+        gridView.matrix = currentMatrix
         // TODO: Add a comparator in order to know if the simulation is halted (lastgen == gen)
     }
     
@@ -111,6 +147,76 @@ class ViewController: UIViewController {
                 startAnimation()
             }
         }
+    }
+    
+    private func updateMiniMap() {
+        var viewport = scrollView.bounds
+        viewport.origin.x = scrollView.contentOffset.x
+        viewport.origin.y = scrollView.contentOffset.y
+        minimap.renderMiniMap(viewport, worldSize: scrollView.contentSize)
+    }
+}
+
+class MiniMapView: UIView {
+    
+    override var backgroundColor: UIColor? {
+        didSet {
+            super.backgroundColor = backgroundColor
+            setNeedsDisplay()
+        }
+    }
+    
+    var viewportColor = UIColor.redColor() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    private var viewport = CGRect.zero
+    private var worldSize = CGSize.zero
+    
+    func renderMiniMap(viewport: CGRect, worldSize: CGSize) {
+        self.viewport = viewport
+        self.worldSize = worldSize
+        setNeedsDisplay()
+    }
+    
+    override func drawRect(rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetFillColorWithColor(context, backgroundColor?.CGColor ?? UIColor.blackColor().CGColor)
+        CGContextFillRect(context, rect)
+        
+        // Scale
+        let scaleX = rect.width / worldSize.width
+        let scaleY = rect.height / worldSize.height
+        
+        let scaledRect = CGRect(x: max(min(viewport.origin.x * scaleX, rect.width), 0),
+                                y: max(min(viewport.origin.y * scaleY, rect.height), 0),
+                                width: viewport.width * scaleX,
+                                height: viewport.height * scaleY)
+        
+        CGContextSetLineWidth(context, 1)
+        CGContextSetStrokeColorWithColor(context, viewportColor.CGColor)
+        CGContextAddRect(context, scaledRect)
+        CGContextStrokePath(context)
+    }
+    
+    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+        return false
+    }
+}
+
+extension ViewController: UIScrollViewDelegate {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return scrollView.subviews.first!
+    }
+    
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        updateMiniMap()
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        updateMiniMap()
     }
 }
 
