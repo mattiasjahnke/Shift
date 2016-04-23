@@ -32,9 +32,9 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NtH-PW-y3d">
-                                <rect key="frame" x="78" y="530" width="92" height="60"/>
+                                <rect key="frame" x="78" y="530" width="149" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0oP-8h-zGg" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0oP-8h-zGg" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="48" height="60"/>
                                         <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
@@ -48,7 +48,7 @@
                                             <action selector="playButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WEx-1e-mq0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZj-OD-w3R" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZj-OD-w3R" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
                                         <rect key="frame" x="58" y="0.0" width="34" height="60"/>
                                         <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
@@ -62,12 +62,18 @@
                                             <action selector="tempoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hDD-39-0FD"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="[AirPlay]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EpF-qU-qNu">
+                                        <rect key="frame" x="102" y="0.0" width="47" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="12"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAk-E0-niv">
                                 <rect key="frame" x="464" y="530" width="125" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f32-5N-SaX" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f32-5N-SaX" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="61" height="60"/>
                                         <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
@@ -81,7 +87,7 @@
                                             <action selector="aboutButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9QR-sy-ZJy"/>
                                         </connections>
                                     </button>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="D5J-iH-NPr">
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="D5J-iH-NPr">
                                         <rect key="frame" x="71" y="0.0" width="54" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAr-8B-MER" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
@@ -134,6 +140,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="airPlayLabel" destination="EpF-qU-qNu" id="4NU-Sh-bgE"/>
                         <outlet property="minimap" destination="Rj9-Qj-Iuu" id="3ZJ-fw-VeT"/>
                         <outlet property="playPauseButton" destination="0oP-8h-zGg" id="Nkq-v2-L2n"/>
                         <outlet property="rightStackView" destination="lAk-E0-niv" id="rDO-d5-ieL"/>

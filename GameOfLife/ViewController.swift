@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tempoButton: UIButton!
     @IBOutlet weak var rightStackView: UIStackView!
     @IBOutlet weak var saveLoadStackView: UIStackView!
+    @IBOutlet weak var airPlayLabel: UILabel!
     
     private let tempoOptions: [(String, NSTimeInterval)] = [("1x", 1),
                                                             ("2x", 0.5),
@@ -30,6 +31,11 @@ class ViewController: UIViewController {
                 gridWindow.screen = gridScreen
                 gridWindow.hidden = false
                 
+                airPlayLabel.hidden = false
+                
+                gridView.hidden = false
+                gridView.showGrid = false
+                
                 gridWindow.addSubview(gridView)
                 gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridView, attribute: .Height, multiplier: 1, constant: 0))
                 gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterX, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterX, multiplier: 1, constant: 0))
@@ -41,8 +47,10 @@ class ViewController: UIViewController {
                     gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridWindow, attribute: .Width, multiplier: 1, constant: 0))
                 }
             } else {
+                airPlayLabel.hidden = true
                 gridWindow = nil
                 gridView.hidden = true
+                gridView.showGrid = true
                 
                 let hostView = scrollView.subviews.first!
                 
@@ -92,7 +100,6 @@ class ViewController: UIViewController {
         
         // ** "Player" view
         gridView.translatesAutoresizingMaskIntoConstraints = false
-        gridView.showGrid = true
         
         // ** Minimap **
         minimap.layer.borderColor = UIColor.whiteColor().CGColor
