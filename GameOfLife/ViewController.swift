@@ -67,11 +67,8 @@ class ViewController: UIViewController {
         // ** Scroll view **
         scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
         
-        let contectFrame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
-        
         // ** View to zoom **
-        let zoomView = UIView()
-        zoomView.frame = contectFrame
+        let zoomView = UIView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
         scrollView.addSubview(zoomView)
         
         // ** Editor **
@@ -83,7 +80,7 @@ class ViewController: UIViewController {
                 self.startAnimation()
             }
         }
-        editingGridView.frame = contectFrame
+        editingGridView.frame = zoomView.bounds
         zoomView.addSubview(editingGridView)
         
         // ** Setup screen **
@@ -122,18 +119,34 @@ class ViewController: UIViewController {
     func nextGeneration() {
         currentMatrix = currentMatrix.incrementedGeneration()
         
-        if currentMatrix == gridView.matrix {
+        guard currentMatrix != gridView.matrix else {
             timer?.invalidate()
             timer = nil
+            return
         }
         
         gridView.matrix = currentMatrix
     }
     
-    func setupOutputScreen() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidConnect(_:)), name: UIScreenDidConnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenDidDisconnect(_:)), name: UIScreenDidDisconnectNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.screenModeDidChange(_:)), name: UIScreenModeDidChangeNotification, object: nil)
+    private func setupOutputScreen() {
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserverForName(UIScreenDidConnectNotification, object: nil, queue: nil) { notification in
+            if let screen = notification.object as? UIScreen {
+                self.setupMirroringForScreen(screen)
+            }
+        }
+        
+        nc.addObserverForName(UIScreenDidDisconnectNotification, object: nil, queue: nil) { notification in
+            self.disableMirroringOnCurrentScreen() // Check if correct screen?
+        }
+        
+        nc.addObserverForName(UIScreenModeDidChangeNotification, object: nil, queue: nil) { notification in
+            self.disableMirroringOnCurrentScreen() // Check if correct screen?
+            if let screen = notification.object as? UIScreen {
+                self.setupMirroringForScreen(screen)
+            }
+        }
+
         // Setup screen mirroring for an existing screen
         let connectedScreens = UIScreen.screens()
         if connectedScreens.count > 1 {
@@ -143,7 +156,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func setupMirroringForScreen(screen: UIScreen) {
+    private func setupMirroringForScreen(screen: UIScreen) {
         // Find max resolution
         var max: (CGFloat, CGFloat) = (0.0, 0.0)
         var maxScreenMode: UIScreenMode?
@@ -160,28 +173,8 @@ class ViewController: UIViewController {
         self.gridScreen = screen
     }
     
-    func disableMirroringOnCurrentScreen() {
+    private func disableMirroringOnCurrentScreen() {
         self.gridScreen = UIScreen.mainScreen()
-    }
-    
-    func screenDidConnect(notification: NSNotification) {
-        print("A screen connected: \(notification.object)")
-        if let screen = notification.object as? UIScreen {
-            setupMirroringForScreen(screen)
-        }
-    }
-    
-    func screenDidDisconnect(notification: NSNotification) {
-        print("A screen was disconnected: \(notification.object)")
-        disableMirroringOnCurrentScreen()
-    }
-    
-    func screenModeDidChange(notification: NSNotification) {
-        print("A screen mode changed: \(notification.object)")
-        disableMirroringOnCurrentScreen()
-        if let screen = notification.object as? UIScreen {
-            setupMirroringForScreen(screen)
-        }
     }
     
     private func updateMiniMap() {
@@ -205,5 +198,3 @@ extension ViewController: UIScrollViewDelegate {
         updateMiniMap()
     }
 }
-
-

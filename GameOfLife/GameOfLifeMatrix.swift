@@ -60,13 +60,13 @@ extension GameOfLifeMatrix {
         var neighbours = 0
         
         if column > 0 &&            self[column - 1, row] { neighbours += 1 }
-        if column < width - 1 &&  self[column + 1, row] { neighbours += 1 }
+        if column < width - 1 &&    self[column + 1, row] { neighbours += 1 }
         if row > 0 &&               self[column, row - 1] { neighbours += 1 }
-        if row < height - 1 &&        self[column, row + 1] { neighbours += 1 }
+        if row < height - 1 &&      self[column, row + 1] { neighbours += 1 }
         
-        if column > 0 && row > 0 &&                   self[column - 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row > 0 &&         self[column + 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row < height - 1 &&  self[column + 1, row + 1] { neighbours += 1 }
+        if column > 0 && row > 0 &&                     self[column - 1, row - 1] { neighbours += 1 }
+        if column < width - 1 && row > 0 &&             self[column + 1, row - 1] { neighbours += 1 }
+        if column < width - 1 && row < height - 1 &&    self[column + 1, row + 1] { neighbours += 1 }
         if column > 0 && row < height - 1 &&            self[column - 1, row + 1] { neighbours += 1 }
         
         return neighbours
