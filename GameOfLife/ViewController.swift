@@ -10,7 +10,18 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var gridScreen: UIScreen! {
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var minimap: MinimapView!
+    @IBOutlet weak var playPauseButton: RoundedButton!
+    @IBOutlet weak var tempoButton: UIButton!
+    @IBOutlet weak var rightStackView: UIStackView!
+    
+    private let tempoOptions: [(String, NSTimeInterval)] = [("1x", 1),
+                                                            ("2x", 0.5),
+                                                            ("4x", 0.25)]
+    private var currentTempoIndex = 0
+    
+    private var gridScreen: UIScreen! {
         didSet {
             if gridScreen != .mainScreen() {
                 gridWindow = UIWindow(frame: gridScreen.bounds)
@@ -40,18 +51,19 @@ class ViewController: UIViewController {
             }
         }
     }
-    var gridWindow: UIWindow!
+    private var gridWindow: UIWindow!
     
-    var seedMatrix = TupleMatrix(width: 50, height: 50)
-    var currentMatrix: TupleMatrix!
-    let editingGridView = MatrixView<TupleMatrix>()
-    var gridView = MatrixView<TupleMatrix>()
+    private var seedMatrix = TupleMatrix(width: 50, height: 50)
+    private var currentMatrix: TupleMatrix!
+    private let editingGridView = MatrixView<TupleMatrix>()
+    private var gridView = MatrixView<TupleMatrix>()
     
-    var timer: NSTimer?
-    var idleTimer: NSTimer?
+    private var timer: NSTimer?
+    private var idleTimer: NSTimer?
     
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var minimap: MinimapView!
+    private var isPlaying: Bool {
+        return timer != nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,27 +80,40 @@ class ViewController: UIViewController {
         editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
-            self.stopAnimation()
-            if self.gridScreen != UIScreen.mainScreen() {
+            //self.stopAnimation()
+            /*if self.gridScreen != UIScreen.mainScreen() {
                 self.startAnimation()
-            }
+            }*/
+            self.playPauseButton.enabled = !matrix.isEmpty
         }
         editingGridView.frame = zoomView.bounds
         zoomView.addSubview(editingGridView)
         
         // ** "Player" view
-        gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
+        //gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
         gridView.translatesAutoresizingMaskIntoConstraints = false
+        gridView.showGrid = true
+        
+        // ** Minimap **
+        minimap.layer.borderColor = UIColor.whiteColor().CGColor
+        minimap.layer.borderWidth = 1
+        minimap.layer.cornerRadius = 2
+        minimap.viewportColor = UIColor(white: 1, alpha: 0.5)
         
         // ** Setup screen **
         gridScreen = UIScreen.mainScreen()
+        
+        // Setup menu
+        playPauseButton.enabled = false
+        setUpMenuIsPlaying(isPlaying)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         setupOutputScreen()
+        updateMiniMap()
     }
-    
+    /*
     func startAnimation() {
         idleTimer?.invalidate()
         idleTimer = nil
@@ -111,18 +136,76 @@ class ViewController: UIViewController {
         if gridScreen == UIScreen.mainScreen() {
             gridView.hidden = true
         }
-    }
+    }*/
     
     func nextGeneration() {
         currentMatrix = currentMatrix.incrementedGeneration()
         
         guard currentMatrix != gridView.matrix else {
-            timer?.invalidate()
-            timer = nil
+            playButtonTapped(playPauseButton)
             return
         }
         
         gridView.matrix = currentMatrix
+    }
+    
+    // MARK: User interaction
+    @IBAction func playButtonTapped(sender: UIButton) {
+        if isPlaying {
+            timer?.invalidate()
+            timer = nil
+            gridView.matrix = seedMatrix
+            if gridScreen == UIScreen.mainScreen() {
+                gridView.hidden = true
+            }
+        } else {
+            currentMatrix = seedMatrix
+            gridView.matrix = currentMatrix
+            if gridScreen == UIScreen.mainScreen() {
+                gridView.hidden = false
+            }
+            restartTimer()
+        }
+        
+        setUpMenuIsPlaying(isPlaying)
+    }
+    
+    @IBAction func tempoButtonTapped(sender: UIButton) {
+        currentTempoIndex += 1
+        if currentTempoIndex >= tempoOptions.count {
+            currentTempoIndex = 0
+        }
+        if isPlaying { restartTimer() }
+        tempoButton.setTitle(tempoOptions[currentTempoIndex].0, forState: .Normal)
+    }
+    
+    @IBAction func aboutButtonTapped(sender: UIButton) {
+        
+    }
+    
+    @IBAction func saveButtonTapped(sender: UIButton) {
+        
+    }
+    
+    @IBAction func loadButtonTapped(sender: UIButton) {
+        
+    }
+    
+    
+    // MARK: Privates
+    private func restartTimer() {
+        timer?.invalidate()
+        timer = nil
+        timer = NSTimer.scheduledTimerWithTimeInterval(tempoOptions[currentTempoIndex].1,
+                                                       target: self,
+                                                       selector: #selector(ViewController.nextGeneration),
+                                                       userInfo: nil,
+                                                       repeats: true)
+    }
+    
+    private func setUpMenuIsPlaying(isPlaying: Bool) {
+        playPauseButton.setTitle(isPlaying ? "Stop" : "Play", forState: .Normal)
+        rightStackView.hidden = isPlaying
     }
     
     private func setupOutputScreen() {

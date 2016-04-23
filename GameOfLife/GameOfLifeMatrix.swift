@@ -12,6 +12,7 @@ protocol GameOfLifeMatrix: Equatable {
     var width: Int { get }
     var height: Int { get }
     var activeCells: [(Int, Int)] { get }
+    var isEmpty: Bool { get }
     
     init(width: Int, height: Int)
     

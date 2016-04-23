@@ -29,6 +29,10 @@ struct TupleMatrix: GameOfLifeMatrix {
         return set.map { ($0.x, $0.y) }
     }
     
+    var isEmpty: Bool {
+        return set.isEmpty
+    }
+    
     init(width: Int, height: Int) {
         self.height = height
         self.width = width
@@ -67,6 +71,10 @@ struct ArrayMatrix: GameOfLifeMatrix {
             }
         }
         return cells
+    }
+    
+    var isEmpty: Bool {
+        return grid.filter{ $0 }.isEmpty
     }
     
     init(width: Int, height: Int) {

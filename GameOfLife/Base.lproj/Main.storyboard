@@ -17,33 +17,122 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="NQi-DJ-jn1">
-                                <rect key="frame" x="-0.5" y="0.0" width="600.5" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="IQ1-Wr-YJr"/>
                                 </connections>
                             </scrollView>
-                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rj9-Qj-Iuu" customClass="MinimapView" customModule="GameOfLife" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rj9-Qj-Iuu" customClass="MinimapView" customModule="GameOfLife" customModuleProvider="target">
                                 <rect key="frame" x="10" y="530" width="60" height="60"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="5aV-NA-TM5"/>
                                     <constraint firstAttribute="width" constant="60" id="p5L-Ae-jwK"/>
                                 </constraints>
                             </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NtH-PW-y3d">
+                                <rect key="frame" x="78" y="530" width="94" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0oP-8h-zGg" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="49" height="60"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="Play">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="playButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WEx-1e-mq0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZj-OD-w3R" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="59" y="0.0" width="35" height="60"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="1x">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tempoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hDD-39-0FD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAk-E0-niv">
+                                <rect key="frame" x="464" y="530" width="126" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f32-5N-SaX" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="62" height="60"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="About">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="aboutButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9QR-sy-ZJy"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="D5J-iH-NPr">
+                                        <rect key="frame" x="72" y="0.0" width="54" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAr-8B-MER" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="54" height="28"/>
+                                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                <state key="normal" title="Save">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="saveButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QRd-Kp-Ibr"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQ9-zT-fal" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="33" width="54" height="28"/>
+                                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                <state key="normal" title="Load">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="loadButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aFb-KT-job"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Rj9-Qj-Iuu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="74t-Q9-diM"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lAk-E0-niv" secondAttribute="bottom" constant="10" id="8Pi-pa-f6o"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Rj9-Qj-Iuu" secondAttribute="bottom" constant="10" id="C3f-Q6-IXU"/>
                             <constraint firstItem="NQi-DJ-jn1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="CCu-QM-xSX"/>
                             <constraint firstAttribute="trailing" secondItem="NQi-DJ-jn1" secondAttribute="trailing" id="Ch7-9G-yca"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NQi-DJ-jn1" secondAttribute="bottom" id="hMZ-Or-Wfa"/>
+                            <constraint firstItem="NtH-PW-y3d" firstAttribute="top" secondItem="NQi-DJ-jn1" secondAttribute="bottom" constant="10" id="KtJ-gd-Tv4"/>
+                            <constraint firstAttribute="trailing" secondItem="lAk-E0-niv" secondAttribute="trailing" constant="10" id="Prr-CP-Fpf"/>
+                            <constraint firstItem="lAk-E0-niv" firstAttribute="top" secondItem="NQi-DJ-jn1" secondAttribute="bottom" constant="10" id="aEa-74-dI6"/>
+                            <constraint firstItem="NtH-PW-y3d" firstAttribute="leading" secondItem="Rj9-Qj-Iuu" secondAttribute="trailing" constant="8" id="gWJ-h1-wRK"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NQi-DJ-jn1" secondAttribute="bottom" constant="80" id="hMZ-Or-Wfa"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NtH-PW-y3d" secondAttribute="bottom" constant="10" id="pLc-3q-avd"/>
                             <constraint firstItem="NQi-DJ-jn1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="rif-d2-6Nu"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="minimap" destination="Rj9-Qj-Iuu" id="3ZJ-fw-VeT"/>
+                        <outlet property="playPauseButton" destination="0oP-8h-zGg" id="Nkq-v2-L2n"/>
+                        <outlet property="rightStackView" destination="lAk-E0-niv" id="rDO-d5-ieL"/>
                         <outlet property="scrollView" destination="NQi-DJ-jn1" id="Ivt-WF-duJ"/>
+                        <outlet property="tempoButton" destination="fZj-OD-w3R" id="zWh-mq-0Mw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
