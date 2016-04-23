@@ -14,7 +14,7 @@ class MyFadeLayer: CATiledLayer {
     }
 }
 
-class ZoomableMatrixView<MatrixType: GameOfLifeMatrix>: UIView {
+class MatrixEditorView<MatrixType: GameOfLifeMatrix>: UIView {
     
     var matrix: MatrixType? { didSet { setNeedsDisplay() } }
     var matrixUpdated: ((MatrixType) -> ())?
@@ -31,7 +31,7 @@ class ZoomableMatrixView<MatrixType: GameOfLifeMatrix>: UIView {
         tempTiledLayer.levelsOfDetailBias = 1
         opaque = true
         
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ZoomableMatrixView.handleTapGesture(_:))))
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MatrixEditorView.handleTapGesture(_:))))
     }
     
     convenience init() {

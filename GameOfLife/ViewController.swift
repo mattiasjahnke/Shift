@@ -16,7 +16,7 @@ class ViewController: UIViewController {
                 gridView.removeFromSuperview()
             }
             
-            gridView = GOLPlayerView()
+            gridView = MatrixPlayerView()
             gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
             gridView.translatesAutoresizingMaskIntoConstraints = false
             
@@ -52,8 +52,8 @@ class ViewController: UIViewController {
     
     var seedMatrix = TupleMatrix(width: 50, height: 50)
     var currentMatrix: TupleMatrix!
-    let editingGridView = ZoomableMatrixView<TupleMatrix>()
-    var gridView: GOLPlayerView<TupleMatrix>!
+    let editingGridView = MatrixEditorView<TupleMatrix>()
+    var gridView: MatrixPlayerView<TupleMatrix>!
     
     var timer: NSTimer?
     var idleTimer: NSTimer?
@@ -138,8 +138,13 @@ class ViewController: UIViewController {
     
     func nextGeneration() {
         currentMatrix = currentMatrix.incrementedGeneration()
+        
+        if currentMatrix == gridView.matrix {
+            timer?.invalidate()
+            timer = nil
+        }
+        
         gridView.matrix = currentMatrix
-        // TODO: Add a comparator in order to know if the simulation is halted (lastgen == gen)
     }
     
     func setupOutputScreen() {
@@ -221,16 +226,11 @@ extension ViewController: UIScrollViewDelegate {
 class MiniMapView: UIView {
     
     override var backgroundColor: UIColor? {
-        didSet {
-            super.backgroundColor = backgroundColor
-            setNeedsDisplay()
-        }
+        didSet { super.backgroundColor = backgroundColor; setNeedsDisplay() }
     }
     
     var viewportColor = UIColor.redColor() {
-        didSet {
-            setNeedsDisplay()
-        }
+        didSet { setNeedsDisplay() }
     }
     
     private var viewport = CGRect.zero
@@ -262,6 +262,7 @@ class MiniMapView: UIView {
         CGContextStrokePath(context)
     }
     
+    // Pass through any touches
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
         return false
     }

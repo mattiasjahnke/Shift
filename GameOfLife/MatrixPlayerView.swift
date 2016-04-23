@@ -13,7 +13,7 @@ private class GOLPlayerLayer: CATiledLayer {
     }
 }
 
-class GOLPlayerView<MatrixType: GameOfLifeMatrix>: UIView {
+class MatrixPlayerView<MatrixType: GameOfLifeMatrix>: UIView {
     var matrix: MatrixType? { didSet { setNeedsDisplay() } }
     
     override class func layerClass() -> AnyClass {
@@ -37,9 +37,7 @@ class GOLPlayerView<MatrixType: GameOfLifeMatrix>: UIView {
         fatalError("This class does not support NSCoding")
     }
     
-    override func drawRect(rect: CGRect) {
-        
-    }
+    override func drawRect(rect: CGRect) {}
     
     override func drawLayer(layer: CALayer, inContext context: CGContext) {
         let rect = bounds
