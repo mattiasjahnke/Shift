@@ -13,6 +13,7 @@
 		CD6B97021CCB60E6006A77A5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97011CCB60E6006A77A5 /* Utilities.swift */; };
 		CD6B97041CCB6232006A77A5 /* MatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97031CCB6232006A77A5 /* MatrixView.swift */; };
 		CD6B97061CCB91B8006A77A5 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */; };
+		CD6B97081CCBA096006A77A5 /* LoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97071CCBA096006A77A5 /* LoadViewController.swift */; };
 		CD8B1D761B654BC1004E00A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8B1D751B654BC1004E00A9 /* AppDelegate.swift */; };
 		CD8B1D781B654BC1004E00A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8B1D771B654BC1004E00A9 /* ViewController.swift */; };
 		CD8B1D7B1B654BC1004E00A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD8B1D791B654BC1004E00A9 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		CD6B97011CCB60E6006A77A5 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD6B97031CCB6232006A77A5 /* MatrixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixView.swift; sourceTree = "<group>"; };
 		CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		CD6B97071CCBA096006A77A5 /* LoadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
 		CD8B1D721B654BC1004E00A9 /* GameOfLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8B1D751B654BC1004E00A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD8B1D771B654BC1004E00A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,12 +58,13 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		CD14F19C1B668E2600E36524 /* Controller */ = {
+		CD14F19C1B668E2600E36524 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				CD8B1D771B654BC1004E00A9 /* ViewController.swift */,
+				CD6B97071CCBA096006A77A5 /* LoadViewController.swift */,
 			);
-			name = Controller;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		CD14F19D1B668E3800E36524 /* Storyboard */ = {
@@ -122,7 +125,7 @@
 			children = (
 				CD6B97001CCB60DB006A77A5 /* Utils */,
 				CD14F19A1B668E0D00E36524 /* Model */,
-				CD14F19C1B668E2600E36524 /* Controller */,
+				CD14F19C1B668E2600E36524 /* Controllers */,
 				CD14F19F1B66907A00E36524 /* View */,
 				CD14F19D1B668E3800E36524 /* Storyboard */,
 				CD14F19E1B668E4600E36524 /* Other */,
@@ -201,6 +204,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD6B97081CCBA096006A77A5 /* LoadViewController.swift in Sources */,
 				CD6B96FF1CCB54C4006A77A5 /* MatrixImplementations.swift in Sources */,
 				CD8B1D781B654BC1004E00A9 /* ViewController.swift in Sources */,
 				CD14F1991B668DB800E36524 /* GameOfLifeMatrix.swift in Sources */,

@@ -24,3 +24,27 @@ func CGContextStrokeGrid(context: CGContext, rect: CGRect, cellSize: CGFloat) {
         yOffset += cellSize
     }
 }
+
+extension UIView {
+    func wrapSubview(view: UIView) {
+        if view.superview != self {
+            addSubview(view)
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[view]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view" : view]))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["view" : view]))
+    }
+}
+
+class LinkButton: UIButton {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        addTarget(self, action: #selector(handleTap), forControlEvents: .TouchUpInside)
+        titleLabel!.numberOfLines = 0
+        titleLabel!.textAlignment = .Center
+    }
+    
+    func handleTap() {
+        UIApplication.sharedApplication().openURL(NSURL(string: currentTitle!)!)
+    }
+}

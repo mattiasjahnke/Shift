@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var playPauseButton: RoundedButton!
     @IBOutlet weak var tempoButton: UIButton!
     @IBOutlet weak var rightStackView: UIStackView!
+    @IBOutlet weak var saveLoadStackView: UIStackView!
     
     private let tempoOptions: [(String, NSTimeInterval)] = [("1x", 1),
                                                             ("2x", 0.5),
@@ -59,14 +60,18 @@ class ViewController: UIViewController {
     private var gridView = MatrixView<TupleMatrix>()
     
     private var timer: NSTimer?
-    private var idleTimer: NSTimer?
     
     private var isPlaying: Bool {
         return timer != nil
     }
     
+    private var displayedModal: UIViewController?
+    private var modalShadowView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        saveLoadStackView.hidden = true
         
         // ** Scroll view **
         scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
@@ -80,17 +85,12 @@ class ViewController: UIViewController {
         editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
-            //self.stopAnimation()
-            /*if self.gridScreen != UIScreen.mainScreen() {
-                self.startAnimation()
-            }*/
             self.playPauseButton.enabled = !matrix.isEmpty
         }
         editingGridView.frame = zoomView.bounds
         zoomView.addSubview(editingGridView)
         
         // ** "Player" view
-        //gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
         gridView.translatesAutoresizingMaskIntoConstraints = false
         gridView.showGrid = true
         
@@ -103,9 +103,15 @@ class ViewController: UIViewController {
         // ** Setup screen **
         gridScreen = UIScreen.mainScreen()
         
-        // Setup menu
+        // ** Setup menu **
         playPauseButton.enabled = false
         setUpMenuIsPlaying(isPlaying)
+        
+        // ** Modal **
+        modalShadowView.backgroundColor = .blackColor()
+        modalShadowView.hidden = true
+        modalShadowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissCurrentModal)))
+        view.wrapSubview(modalShadowView)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -113,30 +119,24 @@ class ViewController: UIViewController {
         setupOutputScreen()
         updateMiniMap()
     }
-    /*
-    func startAnimation() {
-        idleTimer?.invalidate()
-        idleTimer = nil
-        timer?.invalidate()
-        timer = nil
-        currentMatrix = seedMatrix
-        gridView.matrix = currentMatrix
-        if gridScreen == UIScreen.mainScreen() {
-            gridView.hidden = false
-        }
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(ViewController.nextGeneration), userInfo: nil, repeats: true)
-    }
     
-    func stopAnimation() {
-        timer?.invalidate()
-        timer = nil
-        idleTimer?.invalidate()
-        idleTimer = nil
-        idleTimer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(ViewController.startAnimation), userInfo: nil, repeats: true)
-        if gridScreen == UIScreen.mainScreen() {
-            gridView.hidden = true
+    func dismissCurrentModal() {
+        displayedModal?.willMoveToParentViewController(nil)
+        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+            if let displayedModal = self.displayedModal {
+                var rect = displayedModal.view.frame
+                rect.origin.y += self.view.frame.height + 10
+                displayedModal.view.frame = rect
+            }
+            self.modalShadowView.alpha = 0
+        }) { _ in
+            self.displayedModal?.removeFromParentViewController()
+            self.displayedModal?.didMoveToParentViewController(nil)
+            self.displayedModal?.view.removeFromSuperview()
+            self.displayedModal = nil
+            self.modalShadowView.hidden = true
         }
-    }*/
+    }
     
     func nextGeneration() {
         currentMatrix = currentMatrix.incrementedGeneration()
@@ -180,7 +180,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func aboutButtonTapped(sender: UIButton) {
-        
+        guard let vc = storyboard?.instantiateViewControllerWithIdentifier("about") else { return }
+        presentModal(viewController: vc)
     }
     
     @IBAction func saveButtonTapped(sender: UIButton) {
@@ -188,11 +189,41 @@ class ViewController: UIViewController {
     }
     
     @IBAction func loadButtonTapped(sender: UIButton) {
-        
+        guard let vc = storyboard?.instantiateViewControllerWithIdentifier("load") else { return }
+        presentModal(viewController: vc)
     }
-    
+
     
     // MARK: Privates
+    private func presentModal(viewController vc: UIViewController, size: CGSize? = CGSizeMake(320, 500)) {
+        assert(displayedModal == nil)
+        guard let size = size else { return }
+        
+        displayedModal = vc
+        
+        vc.willMoveToParentViewController(self)
+        addChildViewController(vc)
+        
+        vc.view.layer.cornerRadius = 5
+        vc.view.layer.borderColor = UIColor.whiteColor().CGColor
+        vc.view.layer.borderWidth = 1
+        
+        vc.view.frame = CGRectMake(view.frame.width / 2 - size.width / 2, view.frame.height + 10, size.width, size.height)
+        
+        view.addSubview(vc.view)
+        modalShadowView.alpha = 0
+        modalShadowView.hidden = false
+        
+        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+            var rect = vc.view.frame
+            rect.origin.y = self.view.frame.height / 2 - rect.height / 2
+            vc.view.frame = rect
+            self.modalShadowView.alpha = 0.6
+        }) { _ in
+            vc.didMoveToParentViewController(self)
+        }
+    }
+    
     private func restartTimer() {
         timer?.invalidate()
         timer = nil

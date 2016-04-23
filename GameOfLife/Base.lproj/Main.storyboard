@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -30,11 +31,12 @@
                                     <constraint firstAttribute="width" constant="60" id="p5L-Ae-jwK"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NtH-PW-y3d">
-                                <rect key="frame" x="78" y="530" width="94" height="60"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NtH-PW-y3d">
+                                <rect key="frame" x="78" y="530" width="92" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0oP-8h-zGg" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="49" height="60"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0oP-8h-zGg" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Play">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -46,8 +48,9 @@
                                             <action selector="playButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WEx-1e-mq0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZj-OD-w3R" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
-                                        <rect key="frame" x="59" y="0.0" width="35" height="60"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZj-OD-w3R" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="58" y="0.0" width="34" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="1x">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,11 +64,12 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAk-E0-niv">
-                                <rect key="frame" x="464" y="530" width="126" height="60"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAk-E0-niv">
+                                <rect key="frame" x="464" y="530" width="125" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f32-5N-SaX" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="62" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="61" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="About">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -78,10 +82,11 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="D5J-iH-NPr">
-                                        <rect key="frame" x="72" y="0.0" width="54" height="60"/>
+                                        <rect key="frame" x="71" y="0.0" width="54" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAr-8B-MER" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="54" height="28"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                 <state key="normal" title="Save">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -95,6 +100,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQ9-zT-fal" customClass="RoundedButton" customModule="GameOfLife" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="33" width="54" height="28"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                 <state key="normal" title="Load">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -131,13 +137,208 @@
                         <outlet property="minimap" destination="Rj9-Qj-Iuu" id="3ZJ-fw-VeT"/>
                         <outlet property="playPauseButton" destination="0oP-8h-zGg" id="Nkq-v2-L2n"/>
                         <outlet property="rightStackView" destination="lAk-E0-niv" id="rDO-d5-ieL"/>
+                        <outlet property="saveLoadStackView" destination="D5J-iH-NPr" id="vQH-3e-qyD"/>
                         <outlet property="scrollView" destination="NQi-DJ-jn1" id="Ivt-WF-duJ"/>
                         <outlet property="tempoButton" destination="fZj-OD-w3R" id="zWh-mq-0Mw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="512" y="375"/>
+            <point key="canvasLocation" x="72" y="318"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="1Lv-aG-ADg">
+            <objects>
+                <viewController storyboardIdentifier="about" id="g77-cb-WJB" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cSQ-Pv-rm0"/>
+                        <viewControllerLayoutGuide type="bottom" id="cXE-Pp-XMg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ysF-gA-rK5">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nS3-7t-SCc">
+                                <rect key="frame" x="30" y="0.0" width="540" height="1200"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xmA-9p-WTU">
+                                        <rect key="frame" x="0.0" y="30" width="540" height="870"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Game of life" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fA-AQ-vsr">
+                                                <rect key="frame" x="0.0" y="0.0" width="540" height="39"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="32"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHh-qP-5VY">
+                                                <rect key="frame" x="0.0" y="59" width="540" height="61"/>
+                                                <string key="text">There is no real objective in "Game of Life". The player (you!) input an initial "state" by activiting cells on the game board and then sit back and watch evolution happen in front of your eyes!</string>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Rules" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vh5-kB-D0g">
+                                                <rect key="frame" x="0.0" y="140" width="540" height="39"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="32"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbV-hT-eyL">
+                                                <rect key="frame" x="0.0" y="198" width="540" height="82"/>
+                                                <string key="text">Cells can be either "alive" (white) or "dead" (black). Each cell interacts with it's eight adjecent "neighbours". A cells fate (return from the dead, live on or die a grusome death) is decided by a set of rules every iteration.</string>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="9rV-kX-fp5">
+                                                <rect key="frame" x="0.0" y="300" width="540" height="170"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8nC-0Y-r6F">
+                                                        <rect key="frame" x="0.0" y="0.0" width="540" height="41"/>
+                                                        <string key="text">      	• Any live cell with fewer than two live neighbours dies, as if caused by under-population.</string>
+                                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vp3-xZ-43Z">
+                                                        <rect key="frame" x="0.0" y="43" width="540" height="41"/>
+                                                        <string key="text">      	• Any live cell with two or three live neighbours lives on to the next generation.</string>
+                                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gd-1o-MrV">
+                                                        <rect key="frame" x="0.0" y="86" width="540" height="41"/>
+                                                        <string key="text">      	• Any live cell with more than three live neighbours dies, as if by over-population.</string>
+                                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUB-8I-NVH">
+                                                        <rect key="frame" x="0.0" y="129" width="540" height="41"/>
+                                                        <string key="text">      	• Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</string>
+                                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="AirPlay support" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMF-G6-ywh">
+                                                <rect key="frame" x="0.0" y="490" width="540" height="39"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="32"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="By mirroring your screen, you can make evolution happen on the big screen, try it!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCF-yi-9Ei">
+                                                <rect key="frame" x="0.0" y="548" width="540" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Read more" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xtv-b6-zVw">
+                                                <rect key="frame" x="0.0" y="609" width="540" height="39"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="32"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NaO-lv-7My">
+                                                <rect key="frame" x="0.0" y="668" width="540" height="41"/>
+                                                <string key="text">This is an open source project by Mattias Jähnke. Check out the project on GitHub if you're interested in the source code or want to contribute.</string>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wG4-1O-D7C" customClass="LinkButton" customModule="GameOfLife" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="729" width="540" height="30"/>
+                                                <state key="normal" title="https://github.com/mattiasjahnke/GameOfLife"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="If you want to know more about Conway's Game of Life, wikipedia's a great read" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gc2-Qk-LPP">
+                                                <rect key="frame" x="0.0" y="779" width="540" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0e-d8-tvk" customClass="LinkButton" customModule="GameOfLife" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="840" width="540" height="30"/>
+                                                <state key="normal" title="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="xmA-9p-WTU" firstAttribute="width" secondItem="nS3-7t-SCc" secondAttribute="width" id="Pt9-OM-R7w"/>
+                                    <constraint firstAttribute="trailing" secondItem="xmA-9p-WTU" secondAttribute="trailingMargin" id="RQd-cJ-YHd"/>
+                                    <constraint firstAttribute="bottom" secondItem="xmA-9p-WTU" secondAttribute="bottom" constant="20" id="foQ-CO-cw6"/>
+                                    <constraint firstItem="xmA-9p-WTU" firstAttribute="leading" secondItem="nS3-7t-SCc" secondAttribute="leading" id="hg4-Ub-abw"/>
+                                    <constraint firstItem="xmA-9p-WTU" firstAttribute="top" secondItem="nS3-7t-SCc" secondAttribute="top" constant="20" id="v1u-Tp-qj2"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nS3-7t-SCc" firstAttribute="leading" secondItem="ysF-gA-rK5" secondAttribute="leadingMargin" constant="10" id="RgC-BR-JlD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nS3-7t-SCc" secondAttribute="trailing" constant="10" id="VEv-TN-rTq"/>
+                            <constraint firstItem="cXE-Pp-XMg" firstAttribute="top" secondItem="nS3-7t-SCc" secondAttribute="bottom" id="Wb6-86-Bib"/>
+                            <constraint firstItem="nS3-7t-SCc" firstAttribute="top" secondItem="ysF-gA-rK5" secondAttribute="topMargin" id="cI0-ly-DUX"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="1200"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozX-v5-Eei" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="683" y="618"/>
+        </scene>
+        <!--Load View Controller-->
+        <scene sceneID="aQD-9K-2xu">
+            <objects>
+                <viewController storyboardIdentifier="load" id="B7r-36-lhh" customClass="LoadViewController" customModule="GameOfLife" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Ih-go-Kpr"/>
+                        <viewControllerLayoutGuide type="bottom" id="fxM-fl-kiQ"/>
+                    </layoutGuides>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="G4G-0A-FGd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8oP-Xb-tI6">
+                                <rect key="frame" x="20" y="0.0" width="560" height="600"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="vEY-ew-H3g" customClass="LoadCell" customModule="GameOfLife" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="560" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vEY-ew-H3g" id="bvp-k8-e5A">
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="B7r-36-lhh" id="mjq-P0-eHN"/>
+                                    <outlet property="delegate" destination="B7r-36-lhh" id="LVv-TC-Etd"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fxM-fl-kiQ" firstAttribute="top" secondItem="8oP-Xb-tI6" secondAttribute="bottom" id="8G5-D2-7QT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="8oP-Xb-tI6" secondAttribute="trailing" id="AFe-al-1ho"/>
+                            <constraint firstItem="8oP-Xb-tI6" firstAttribute="top" secondItem="G4G-0A-FGd" secondAttribute="topMargin" id="BQZ-3P-5q0"/>
+                            <constraint firstItem="8oP-Xb-tI6" firstAttribute="leading" secondItem="G4G-0A-FGd" secondAttribute="leadingMargin" id="bzC-Sh-OtP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="8oP-Xb-tI6" id="JR5-tL-5fC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xWF-PN-Ybu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="72" y="972"/>
         </scene>
     </scenes>
 </document>
