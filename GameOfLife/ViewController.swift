@@ -50,10 +50,10 @@ class ViewController: UIViewController {
     }
     var gridWindow: UIWindow!
     
-    var seedMatrix = Matrix(width: 50, height: 50)
-    var currentMatrix: Matrix!
-    let editingGridView = ZoomableMatrixView<Matrix>()
-    var gridView: GOLPlayerView<Matrix>!
+    var seedMatrix = TupleMatrix(width: 50, height: 50)
+    var currentMatrix: TupleMatrix!
+    let editingGridView = ZoomableMatrixView<TupleMatrix>()
+    var gridView: GOLPlayerView<TupleMatrix>!
     
     var timer: NSTimer?
     var idleTimer: NSTimer?

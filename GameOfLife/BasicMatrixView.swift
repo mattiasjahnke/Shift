@@ -57,22 +57,19 @@ class ZoomableMatrixView<MatrixType: GameOfLifeMatrix>: UIView {
         CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
         CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0))
         
-        for y in 0..<matrix.height {
-            for x in 0..<matrix.width {
-                if matrix[x, y] == true {
-                    let cellRect = matrix.frameForPosition(CGPoint(x: x, y: y), rect: rect)
-                    
-                    CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
-                    CGContextFillRect(context, cellRect)
-                    
-                    let attr:CFDictionaryRef = [NSFontAttributeName : UIFont.systemFontOfSize(10, weight: UIFontWeightUltraLight),
-                                                NSForegroundColorAttributeName : UIColor(white: 0, alpha: 0.2)]
-                    let line = CTLineCreateWithAttributedString(CFAttributedStringCreate(nil, "\(matrix.numberOfNeighbours(x, row: y))", attr))
-                    CGContextSetTextDrawingMode(context, .Fill)
-                    CGContextSetTextPosition(context, cellRect.origin.x + 4.5, cellRect.origin.y + 11)
-                    CTLineDraw(line, context)
-                }
-            }
+        for pos in matrix.activeCells {
+            let cellRect = matrix.frameForPosition(CGPoint(x: pos.0, y: pos.1), rect: rect)
+            
+            CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
+            CGContextFillRect(context, cellRect)
+            
+            // This needs a cache if we're gonna have it!
+            /*let attr:CFDictionaryRef = [NSFontAttributeName : UIFont.systemFontOfSize(10, weight: UIFontWeightUltraLight),
+                                        NSForegroundColorAttributeName : UIColor(white: 0, alpha: 0.2)]
+            let line = CTLineCreateWithAttributedString(CFAttributedStringCreate(nil, "\(matrix.numberOfNeighbours(pos.0, row: pos.1))", attr))
+            CGContextSetTextDrawingMode(context, .Fill)
+            CGContextSetTextPosition(context, cellRect.origin.x + 4.5, cellRect.origin.y + 11)
+            CTLineDraw(line, context)*/
         }
         
         let cellSize = matrix.frameForPosition(CGPointZero, rect: rect).size.width

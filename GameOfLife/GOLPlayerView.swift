@@ -51,14 +51,10 @@ class GOLPlayerView<MatrixType: GameOfLifeMatrix>: UIView {
         
         guard let matrix = matrix else { return }
         
-        for y in 0..<matrix.height {
-            for x in 0..<matrix.width {
-                if matrix[x, y] == true {
-                    let cellRect = matrix.frameForPosition(CGPoint(x: x, y: y), rect: rect)
-                    CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
-                    CGContextFillRect(context, cellRect)
-                }
-            }
+        for pos in matrix.activeCells {
+            let cellRect = matrix.frameForPosition(CGPoint(x: pos.0, y: pos.1), rect: rect)
+            CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
+            CGContextFillRect(context, cellRect)
         }
     }
 }
