@@ -103,10 +103,10 @@ struct TupleMatrix: GameOfLifeMatrix {
     subscript(x: Int, y: Int) -> Bool {
         get { return grid.contains(Point(x: x, y: y)) }
         set {
-            if self[x, y] {
-                grid.remove(Point(x: x, y: y))
-            } else {
+            if newValue && !self[x, y] {
                 grid.insert(Point(x: x, y: y))
+            } else if !newValue && self[x, y] {
+                grid.remove(Point(x: x, y: y))
             }
         }
     }
