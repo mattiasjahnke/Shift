@@ -12,14 +12,6 @@ class ViewController: UIViewController {
     
     var gridScreen: UIScreen! {
         didSet {
-            if gridView != nil {
-                gridView.removeFromSuperview()
-            }
-            
-            gridView = MatrixPlayerView()
-            gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
-            gridView.translatesAutoresizingMaskIntoConstraints = false
-            
             if gridScreen != .mainScreen() {
                 gridWindow = UIWindow(frame: gridScreen.bounds)
                 gridWindow.layer.contentsGravity = kCAGravityResizeAspect
@@ -52,8 +44,8 @@ class ViewController: UIViewController {
     
     var seedMatrix = TupleMatrix(width: 50, height: 50)
     var currentMatrix: TupleMatrix!
-    let editingGridView = MatrixEditorView<TupleMatrix>()
-    var gridView: MatrixPlayerView<TupleMatrix>!
+    let editingGridView = MatrixView<TupleMatrix>()
+    var gridView = MatrixView<TupleMatrix>()
     
     var timer: NSTimer?
     var idleTimer: NSTimer?
@@ -73,6 +65,7 @@ class ViewController: UIViewController {
         
         // ** Editor **
         editingGridView.matrix = seedMatrix
+        editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
             self.stopAnimation()
@@ -82,6 +75,10 @@ class ViewController: UIViewController {
         }
         editingGridView.frame = zoomView.bounds
         zoomView.addSubview(editingGridView)
+        
+        // ** "Player" view
+        gridView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.stopAnimation)))
+        gridView.translatesAutoresizingMaskIntoConstraints = false
         
         // ** Setup screen **
         gridScreen = UIScreen.mainScreen()
