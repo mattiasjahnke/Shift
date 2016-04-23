@@ -58,22 +58,13 @@ class ViewController: UIViewController {
     var timer: NSTimer?
     var idleTimer: NSTimer?
     
-    var scrollView: UIScrollView!
-    var minimap: MiniMapView!
-
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var minimap: MinimapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blackColor()
         
         // ** Scroll view **
-        scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.minimumZoomScale = 1
-        scrollView.maximumZoomScale = 3
-        scrollView.delegate = self
-        view.addSubview(scrollView)
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[scroll]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scroll" : scrollView]))
         scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
         
         let contectFrame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
@@ -94,14 +85,6 @@ class ViewController: UIViewController {
         }
         editingGridView.frame = contectFrame
         zoomView.addSubview(editingGridView)
-        
-        // ** Minimap **
-        minimap = MiniMapView()
-        minimap.alpha = 0.6
-        minimap.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(minimap)
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-10-[map(==60)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[map(==60)]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["map" : minimap]))
         
         // ** Setup screen **
         gridScreen = UIScreen.mainScreen()
@@ -205,7 +188,7 @@ class ViewController: UIViewController {
         var viewport = scrollView.bounds
         viewport.origin.x = scrollView.contentOffset.x
         viewport.origin.y = scrollView.contentOffset.y
-        minimap.renderMiniMap(viewport, worldSize: scrollView.contentSize)
+        minimap.renderMinimap(viewport, worldSize: scrollView.contentSize)
     }
 }
 
@@ -223,47 +206,4 @@ extension ViewController: UIScrollViewDelegate {
     }
 }
 
-class MiniMapView: UIView {
-    
-    override var backgroundColor: UIColor? {
-        didSet { super.backgroundColor = backgroundColor; setNeedsDisplay() }
-    }
-    
-    var viewportColor = UIColor.redColor() {
-        didSet { setNeedsDisplay() }
-    }
-    
-    private var viewport = CGRect.zero
-    private var worldSize = CGSize.zero
-    
-    func renderMiniMap(viewport: CGRect, worldSize: CGSize) {
-        self.viewport = viewport
-        self.worldSize = worldSize
-        setNeedsDisplay()
-    }
-    
-    override func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, backgroundColor?.CGColor ?? UIColor.blackColor().CGColor)
-        CGContextFillRect(context, rect)
-        
-        // Scale
-        let scaleX = rect.width / worldSize.width
-        let scaleY = rect.height / worldSize.height
-        
-        let scaledRect = CGRect(x: max(min(viewport.origin.x * scaleX, rect.width), 0),
-                                y: max(min(viewport.origin.y * scaleY, rect.height), 0),
-                                width: viewport.width * scaleX,
-                                height: viewport.height * scaleY)
-        
-        CGContextSetLineWidth(context, 1)
-        CGContextSetStrokeColorWithColor(context, viewportColor.CGColor)
-        CGContextAddRect(context, scaledRect)
-        CGContextStrokePath(context)
-    }
-    
-    // Pass through any touches
-    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
-        return false
-    }
-}
+

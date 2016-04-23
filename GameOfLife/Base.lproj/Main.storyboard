@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8152.3" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8124.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -15,8 +15,36 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="NQi-DJ-jn1">
+                                <rect key="frame" x="-0.5" y="0.0" width="600.5" height="600"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="IQ1-Wr-YJr"/>
+                                </connections>
+                            </scrollView>
+                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rj9-Qj-Iuu" customClass="MinimapView" customModule="GameOfLife" customModuleProvider="target">
+                                <rect key="frame" x="10" y="530" width="60" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="5aV-NA-TM5"/>
+                                    <constraint firstAttribute="width" constant="60" id="p5L-Ae-jwK"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Rj9-Qj-Iuu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="74t-Q9-diM"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Rj9-Qj-Iuu" secondAttribute="bottom" constant="10" id="C3f-Q6-IXU"/>
+                            <constraint firstItem="NQi-DJ-jn1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="CCu-QM-xSX"/>
+                            <constraint firstAttribute="trailing" secondItem="NQi-DJ-jn1" secondAttribute="trailing" id="Ch7-9G-yca"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="NQi-DJ-jn1" secondAttribute="bottom" id="hMZ-Or-Wfa"/>
+                            <constraint firstItem="NQi-DJ-jn1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="rif-d2-6Nu"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="minimap" destination="Rj9-Qj-Iuu" id="3ZJ-fw-VeT"/>
+                        <outlet property="scrollView" destination="NQi-DJ-jn1" id="Ivt-WF-duJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
