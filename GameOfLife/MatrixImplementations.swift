@@ -9,23 +9,6 @@
 import Foundation
 
 // MARK: Tuple Set implemention of a Matrix
-private struct Point: Hashable, Equatable {
-    let x: Int, y: Int
-    private let hash: Int
-    
-    init(x: Int, y: Int) {
-        self.x = x
-        self.y = y
-        hash = "\(x.hashValue)\(y.hashValue)".hashValue
-    }
-    
-    var hashValue: Int {
-        return hash
-    }
-}
-private func ==(lhs: Point, rhs: Point) -> Bool {
-    return lhs.hashValue == rhs.hashValue
-}
 
 struct TupleMatrix: GameOfLifeMatrix {
     private(set) var height: Int

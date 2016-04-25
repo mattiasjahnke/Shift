@@ -8,6 +8,41 @@
 
 import Foundation
 
+struct Point: Hashable, Equatable {
+    let x: Int, y: Int
+    private let hash: Int
+    
+    init(x: Int, y: Int) {
+        self.x = x
+        self.y = y
+        hash = "\(x.hashValue)\(y.hashValue)".hashValue
+    }
+    
+    var hashValue: Int {
+        return hash
+    }
+}
+
+// Move
+extension Point {
+    var adjecentPoints: Set<Point> {
+        return [left, leftUp, up, rightUp, right, rightDown, down, leftDown]
+    }
+    
+    var left: Point {       return Point(x: x - 1, y: y) }
+    var leftUp: Point {     return Point(x: x - 1, y: y - 1) }
+    var up: Point {         return Point(x: x, y: y - 1) }
+    var rightUp: Point {    return Point(x: x + 1, y: y - 1) }
+    var right: Point {      return Point(x: x + 1, y: y) }
+    var rightDown: Point {  return Point(x: x + 1, y: y + 1) }
+    var down: Point {       return Point(x: x, y: y + 1) }
+    var leftDown: Point {   return Point(x: x - 1, y: y + 1) }
+}
+
+func ==(lhs: Point, rhs: Point) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
 protocol GameOfLifeMatrix: Equatable {
     var width: Int { get }
     var height: Int { get }
@@ -35,22 +70,23 @@ extension GameOfLifeMatrix {
     func incrementedGeneration() -> Self {
         var next = Self.init(width: width, height: height)
         
-        for y in 0..<height {
-            for x in 0..<width {
-                let numOfNeighbours = numberOfNeighbours(x, row: y)
-                if self[x, y] == false {
-                    if numOfNeighbours == 3 {
-                        next[x, y] = true // Dead cell comes alive
-                    }
-                } else {
-                    if numOfNeighbours < 2 {
-                        next[x, y] = false // Under-population, dies
-                    } else if numOfNeighbours < 4 {
-                        next[x, y] = true // Lives on
-                    } else {
-                        next[x, y] = false // Over-population, dies
-                    }
+        var cellsToProcess = [Point : Int]() // Point : Neighbours
+        for cell in activeCells.map({ Point(x: $0.0, y: $0.1) }) {
+            // Retrieve the "inactive" neighbours
+            for inactiveNeighbour in getAdjecents(cell).filter({ !$0.1 }).map({ $0.0 }) {
+                cellsToProcess[inactiveNeighbour] = numberOfNeighbours(inactiveNeighbour.x, row: inactiveNeighbour.y)
+            }
+            // Add current cell
+            cellsToProcess[cell] = numberOfNeighbours(cell.x, row: cell.y)
+        }
+        
+        for (cell, neighbours) in cellsToProcess {
+            if self[cell.x, cell.y] == false {
+                if neighbours == 3 {
+                    next[cell.x, cell.y] = true // Dead cell comes alive
                 }
+            } else {
+                next[cell.x, cell.y] = neighbours > 1 && neighbours < 4
             }
         }
         
@@ -58,18 +94,20 @@ extension GameOfLifeMatrix {
     }
     
     func numberOfNeighbours(column: Int, row: Int) -> Int {
-        var neighbours = 0
+        return getAdjecents(Point(x: column, y: row)).filter({ $0.1 }).count
+    }
+    
+    private func getAdjecents(point: Point) -> [Point : Bool] {
+        let adjecent = point.adjecentPoints.filter { self.containtsPoint($0) }
         
-        if column > 0 &&            self[column - 1, row] { neighbours += 1 }
-        if column < width - 1 &&    self[column + 1, row] { neighbours += 1 }
-        if row > 0 &&               self[column, row - 1] { neighbours += 1 }
-        if row < height - 1 &&      self[column, row + 1] { neighbours += 1 }
-        
-        if column > 0 && row > 0 &&                     self[column - 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row > 0 &&             self[column + 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row < height - 1 &&    self[column + 1, row + 1] { neighbours += 1 }
-        if column > 0 && row < height - 1 &&            self[column - 1, row + 1] { neighbours += 1 }
-        
-        return neighbours
+        var dic = [Point : Bool]()
+        for cell in adjecent {
+            dic[cell] = self[cell.x, cell.y]
+        }
+        return dic
+    }
+    
+    private func containtsPoint(point: Point) -> Bool {
+        return point.x >= 0 && point.y >= 0 && point.x < width - 1 && point.y < height - 1
     }
 }
