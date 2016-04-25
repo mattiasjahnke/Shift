@@ -53,8 +53,6 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
         guard let matrix = matrix else { return }
         
         CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
-        CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0))
-        CGContextSetTextDrawingMode(context, .Fill)
         
         // Draw active cells
         for pos in matrix.activeCells {
@@ -64,7 +62,7 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
         
         // Draw grid
         if showGrid {
-            let cellSize = matrix.frameForPoint(Point(x: 0, y: 0), rect: rect).size.width
+            let cellSize = matrix.frameForPoint(Point(), rect: rect).size.width
             CGContextSetLineWidth(context, 1.0)
             CGContextSetStrokeColorWithColor(context, gridColor.CGColor)
             
@@ -73,28 +71,25 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
     }
     
     func handleTapGesture(gesture: UITapGestureRecognizer) {
-        guard let position = cellPointAtPoint(gesture.locationInView(self), rect: frame) else { return }
         guard matrix != nil else { return }
-        matrix![Int(position.x), Int(position.y)] = !matrix![Int(position.x), Int(position.y)]
-        setNeedsDisplay()
-        if let matrixUpdated = matrixUpdated {
-            matrixUpdated(matrix!)
-        }
-    }
-    
-    private func cellPointAtPoint(point: CGPoint, rect: CGRect) -> CGPoint? {
-        guard let matrix = matrix else { return nil }
-        let cellSize = matrix.frameForPoint(Point(x: 0, y: 0), rect: rect).size.width
-        let res = CGPointMake((point.x - point.x % cellSize) / cellSize, (point.y - point.y % cellSize) / cellSize)
-        if Int(res.x) >= 0 && Int(res.x) < matrix.width && Int(res.y) >= 0 && Int(res.y) < matrix.height {
-            return res
-        } else {
-            return nil
+        
+        let touchPoint = gesture.locationInView(self)
+        
+        let cellSize = matrix!.frameForPoint(Point(), rect: frame).size
+        let point = Point(x: Int((touchPoint.x - touchPoint.x % cellSize.width) / cellSize.width), y: Int((touchPoint.y - touchPoint.y % cellSize.height) / cellSize.height))
+        
+        if matrix!.contains(point) {
+            matrix![point] = !matrix![point]
+            setNeedsDisplay()
+            if let matrixUpdated = matrixUpdated {
+                matrixUpdated(matrix!)
+            }
         }
     }
 }
 
 private extension GameOfLifeMatrix {
+    // TODO: This should respect different width/height of cells
     func frameForPoint(point: Point, rect: CGRect) -> CGRect {
         let minSize = max(rect.size.width, rect.size.height)
         let s = round(minSize / CGFloat(min(width, height)))

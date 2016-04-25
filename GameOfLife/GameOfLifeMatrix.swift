@@ -16,14 +16,14 @@ protocol GameOfLifeMatrix: Equatable {
     
     init(width: Int, height: Int)
     
-    subscript(x: Int, y: Int) -> Bool { get set }
+    subscript(point: Point) -> Bool { get set }
 }
 
 struct Point: Hashable, Equatable {
     let x: Int, y: Int
     private let hash: Int
     
-    init(x: Int, y: Int) {
+    init(x: Int = 0, y: Int = 0) {
         self.x = x
         self.y = y
         hash = "\(x.hashValue)\(y.hashValue)".hashValue
@@ -37,13 +37,24 @@ func ==(lhs: Point, rhs: Point) -> Bool {
 }
 
 extension GameOfLifeMatrix {
+    func contains(point: Point) -> Bool {
+        return point.x >= 0 && point.y >= 0 && point.x < width - 1 && point.y < height - 1
+    }
+    
+    subscript(x: Int, y: Int) -> Bool {
+        get { return self[Point(x: x, y: y)] }
+        set { self[Point(x: x, y: y)] = newValue }
+    }
+}
+
+extension GameOfLifeMatrix {
     func incrementedGeneration() -> Self {
         var next = Self.init(width: width, height: height)
         var processed = Set<Point>()
         for cell in activeCells {
             next[cell] = fate(cell)
             // Determine the fate for the the "inactive" neighbours
-            for inactive in cell.adjecentPoints.filter({ self.containts($0) && !self[$0] }) {
+            for inactive in cell.adjecentPoints.filter({ self.contains($0) && !self[$0] }) {
                 guard !processed.contains(inactive) else { continue }
                 next[inactive] = fate(inactive)
                 processed.insert(inactive)
@@ -54,7 +65,7 @@ extension GameOfLifeMatrix {
     }
     
     private func fate(point: Point) -> Bool {
-        let activeNeighbours = point.adjecentPoints.filter { self.containts($0) && self[$0] }.count
+        let activeNeighbours = point.adjecentPoints.filter { self.contains($0) && self[$0] }.count
         switch activeNeighbours {
         case 3 where self[point] == false:      // Dead cell comes alive
             return true
@@ -63,61 +74,6 @@ extension GameOfLifeMatrix {
         default:                                // Under- or over-population, dies
             return false
         }
-    }
-    
-    private func containts(point: Point) -> Bool {
-        return point.x >= 0 && point.y >= 0 && point.x < width - 1 && point.y < height - 1
-    }
-}
-
-
-extension GameOfLifeMatrix {
-    func incrementedGenerationOld() -> Self {
-        var next = Self.init(width: width, height: height)
-        
-        for y in 0..<height {
-            for x in 0..<width {
-                let numOfNeighbours = numberOfNeighboursOld(x, row: y)
-                if self[x, y] == false {
-                    if numOfNeighbours == 3 {
-                        next[x, y] = true // Dead cell comes alive
-                    }
-                } else {
-                    if numOfNeighbours < 2 {
-                        next[x, y] = false // Under-population, dies
-                    } else if numOfNeighbours < 4 {
-                        next[x, y] = true // Lives on
-                    } else {
-                        next[x, y] = false // Over-population, dies
-                    }
-                }
-            }
-        }
-        
-        return next
-    }
-    
-    private func numberOfNeighboursOld(column: Int, row: Int) -> Int {
-        var neighbours = 0
-        
-        if column > 0 &&            self[column - 1, row] { neighbours += 1 }
-        if column < width - 1 &&    self[column + 1, row] { neighbours += 1 }
-        if row > 0 &&               self[column, row - 1] { neighbours += 1 }
-        if row < height - 1 &&      self[column, row + 1] { neighbours += 1 }
-        
-        if column > 0 && row > 0 &&                     self[column - 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row > 0 &&             self[column + 1, row - 1] { neighbours += 1 }
-        if column < width - 1 && row < height - 1 &&    self[column + 1, row + 1] { neighbours += 1 }
-        if column > 0 && row < height - 1 &&            self[column - 1, row + 1] { neighbours += 1 }
-        
-        return neighbours
-    }
-}
-
-private extension GameOfLifeMatrix {
-    subscript(point: Point) -> Bool {
-        get { return self[point.x, point.y] }
-        set { self[point.x, point.y] = newValue }
     }
 }
 

@@ -62,10 +62,10 @@ class ViewController: UIViewController {
     }
     private var gridWindow: UIWindow!
     
-    private var seedMatrix = ArrayMatrix(width: 50, height: 50)
-    private var currentMatrix: ArrayMatrix!
-    private let editingGridView = MatrixView<ArrayMatrix>()
-    private var gridView = MatrixView<ArrayMatrix>()
+    private var seedMatrix = TupleMatrix(width: 100, height: 100)
+    private var currentMatrix: TupleMatrix!
+    private let editingGridView = MatrixView<TupleMatrix>()
+    private var gridView = MatrixView<TupleMatrix>()
     
     private var timer: NSTimer?
     
@@ -100,6 +100,7 @@ class ViewController: UIViewController {
         
         // ** "Player" view
         gridView.translatesAutoresizingMaskIntoConstraints = false
+        gridView.userInteractionEnabled = false
         
         // ** Minimap **
         minimap.layer.borderColor = UIColor.whiteColor().CGColor
@@ -146,10 +147,7 @@ class ViewController: UIViewController {
     }
     
     func nextGeneration() {
-        let s = NSDate().timeIntervalSince1970
         currentMatrix = currentMatrix.incrementedGeneration()
-        let e = NSDate().timeIntervalSince1970
-        print(e - s)
         
         guard currentMatrix != gridView.matrix else {
             playButtonTapped(playPauseButton)
