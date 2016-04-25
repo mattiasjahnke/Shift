@@ -62,10 +62,10 @@ class ViewController: UIViewController {
     }
     private var gridWindow: UIWindow!
     
-    private var seedMatrix = TupleMatrix(width: 50, height: 50)
-    private var currentMatrix: TupleMatrix!
-    private let editingGridView = MatrixView<TupleMatrix>()
-    private var gridView = MatrixView<TupleMatrix>()
+    private var seedMatrix = ArrayMatrix(width: 50, height: 50)
+    private var currentMatrix: ArrayMatrix!
+    private let editingGridView = MatrixView<ArrayMatrix>()
+    private var gridView = MatrixView<ArrayMatrix>()
     
     private var timer: NSTimer?
     
@@ -146,7 +146,10 @@ class ViewController: UIViewController {
     }
     
     func nextGeneration() {
-        currentMatrix = currentMatrix.incrementedGeneration()
+        let s = NSDate().timeIntervalSince1970
+        currentMatrix = currentMatrix.incrementedGenerationOld()
+        let e = NSDate().timeIntervalSince1970
+        print(e - s)
         
         guard currentMatrix != gridView.matrix else {
             playButtonTapped(playPauseButton)

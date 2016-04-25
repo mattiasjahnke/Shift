@@ -20,7 +20,6 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
     var matrixUpdated: ((MatrixType) -> ())?
     
     var showGrid = false { didSet { setNeedsDisplay() } }
-    var displayNrOfNeighbours = false { didSet { setNeedsDisplay() } }
     var gridColor = UIColor.lightGrayColor() { didSet { setNeedsDisplay() } }
     var cellColor = UIColor.whiteColor() { didSet { setNeedsDisplay() } }
     override var backgroundColor: UIColor? {
@@ -59,23 +58,13 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
         
         // Draw active cells
         for pos in matrix.activeCells {
-            let cellRect = matrix.frameForPosition(CGPoint(x: pos.0, y: pos.1), rect: rect)
+            let cellRect = matrix.frameForPoint(pos, rect: rect)
             CGContextFillRect(context, cellRect)
-            
-            // This needs a cache if we're gonna have it!
-            if displayNrOfNeighbours {
-                let attr:CFDictionaryRef = [NSFontAttributeName : UIFont.systemFontOfSize(10, weight: UIFontWeightUltraLight),
-                                            NSForegroundColorAttributeName : UIColor(white: 0, alpha: 0.2)]
-                let line = CTLineCreateWithAttributedString(CFAttributedStringCreate(nil, "\(matrix.numberOfNeighbours(pos.0, row: pos.1))", attr))
-                
-                CGContextSetTextPosition(context, cellRect.origin.x + 4.5, cellRect.origin.y + 11)
-                CTLineDraw(line, context)
-            }
         }
         
         // Draw grid
         if showGrid {
-            let cellSize = matrix.frameForPosition(CGPointZero, rect: rect).size.width
+            let cellSize = matrix.frameForPoint(Point(x: 0, y: 0), rect: rect).size.width
             CGContextSetLineWidth(context, 1.0)
             CGContextSetStrokeColorWithColor(context, gridColor.CGColor)
             
@@ -95,7 +84,7 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
     
     private func cellPointAtPoint(point: CGPoint, rect: CGRect) -> CGPoint? {
         guard let matrix = matrix else { return nil }
-        let cellSize = matrix.frameForPosition(CGPointZero, rect: rect).size.width
+        let cellSize = matrix.frameForPoint(Point(x: 0, y: 0), rect: rect).size.width
         let res = CGPointMake((point.x - point.x % cellSize) / cellSize, (point.y - point.y % cellSize) / cellSize)
         if Int(res.x) >= 0 && Int(res.x) < matrix.width && Int(res.y) >= 0 && Int(res.y) < matrix.height {
             return res
@@ -106,9 +95,9 @@ class MatrixView<MatrixType: GameOfLifeMatrix>: UIView {
 }
 
 private extension GameOfLifeMatrix {
-    func frameForPosition(position: CGPoint, rect: CGRect) -> CGRect {
+    func frameForPoint(point: Point, rect: CGRect) -> CGRect {
         let minSize = max(rect.size.width, rect.size.height)
         let s = round(minSize / CGFloat(min(width, height)))
-        return CGRect(x: position.x * s, y: position.y * s, width: s, height: s)
+        return CGRect(x: CGFloat(point.x) * s, y: CGFloat(point.y) * s, width: s, height: s)
     }
 }

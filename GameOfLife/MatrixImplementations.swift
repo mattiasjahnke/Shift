@@ -15,8 +15,8 @@ struct TupleMatrix: GameOfLifeMatrix {
     private(set) var width: Int
     private var set = Set<Point>()
     
-    var activeCells: [(Int, Int)] {
-        return set.map { ($0.x, $0.y) }
+    var activeCells: Set<Point> {
+        return set
     }
     
     var isEmpty: Bool {
@@ -51,12 +51,12 @@ struct ArrayMatrix: GameOfLifeMatrix {
     private(set) var width: Int
     private var grid: [Bool]
     
-    var activeCells: [(Int, Int)] {
-        var cells = [(Int, Int)]()
+    var activeCells: Set<Point> {
+        var cells = Set<Point>()
         for y in 0..<height {
             for x in 0..<width {
                 if self[x, y] == true {
-                    cells.append((x, y))
+                    cells.insert(Point(x: x, y: y))
                 }
             }
         }
