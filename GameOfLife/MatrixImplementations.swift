@@ -11,9 +11,16 @@ import Foundation
 // MARK: Tuple Set implemention of a Matrix
 private struct Point: Hashable, Equatable {
     let x: Int, y: Int
+    private let hash: Int
+    
+    init(x: Int, y: Int) {
+        self.x = x
+        self.y = y
+        hash = "\(x.hashValue)\(y.hashValue)".hashValue
+    }
     
     var hashValue: Int {
-        return "\(x.hashValue)\(y.hashValue)".hashValue
+        return hash
     }
 }
 private func ==(lhs: Point, rhs: Point) -> Bool {
