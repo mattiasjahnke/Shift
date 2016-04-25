@@ -147,7 +147,7 @@ class ViewController: UIViewController {
     
     func nextGeneration() {
         let s = NSDate().timeIntervalSince1970
-        currentMatrix = currentMatrix.incrementedGenerationOld()
+        currentMatrix = currentMatrix.incrementedGeneration()
         let e = NSDate().timeIntervalSince1970
         print(e - s)
         

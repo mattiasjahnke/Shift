@@ -43,7 +43,7 @@ extension GameOfLifeMatrix {
         for cell in activeCells {
             next[cell] = fate(cell)
             // Determine the fate for the the "inactive" neighbours
-            for inactive in getAdjecents(cell).filter({ !$0.1 }).map({ $0.0 }) {
+            for inactive in cell.adjecentPoints.filter({ self.containts($0) && !self[$0] }) {
                 guard !processed.contains(inactive) else { continue }
                 next[inactive] = fate(inactive)
                 processed.insert(inactive)
@@ -54,7 +54,7 @@ extension GameOfLifeMatrix {
     }
     
     private func fate(point: Point) -> Bool {
-        let activeNeighbours = getAdjecents(point).flatMap { $0.1 ? $0.0 : nil }.count
+        let activeNeighbours = point.adjecentPoints.filter { self.containts($0) && self[$0] }.count
         switch activeNeighbours {
         case 3 where self[point] == false:      // Dead cell comes alive
             return true
@@ -65,16 +65,7 @@ extension GameOfLifeMatrix {
         }
     }
     
-    private func getAdjecents(point: Point) -> [Point : Bool] {
-        let adjecent = point.adjecentPoints.filter { self.containtsPoint($0) }
-        var dic = [Point : Bool]()
-        for cell in adjecent {
-            dic[cell] = self[cell]
-        }
-        return dic
-    }
-    
-    private func containtsPoint(point: Point) -> Bool {
+    private func containts(point: Point) -> Bool {
         return point.x >= 0 && point.y >= 0 && point.x < width - 1 && point.y < height - 1
     }
 }
