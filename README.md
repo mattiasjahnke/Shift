@@ -14,4 +14,5 @@ There is no real objective in "Game of Life". The player sets up a "seed" and th
 * Implement save/load functionality
 * Implement a few "stock seeds"
 * Implement a fancier rendering
+* Create some gif's from the app for github
 * Create app icon
