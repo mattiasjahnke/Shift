@@ -280,15 +280,17 @@ class ViewController: UIViewController {
         var max: (CGFloat, CGFloat) = (0.0, 0.0)
         var maxScreenMode: UIScreenMode?
         
-        for current in screen.availableModes {
-            if maxScreenMode == nil || current.size.height > max.1 || current.size.width > max.0 {
-                max = (current.size.width, current.size.height)
-                maxScreenMode = current
+        if !screen.availableModes.isEmpty {
+            for current in screen.availableModes {
+                if maxScreenMode == nil || current.size.height > max.1 || current.size.width > max.0 {
+                    max = (current.size.width, current.size.height)
+                    maxScreenMode = current
+                }
             }
+            
+            screen.currentMode = maxScreenMode
         }
-        
-        screen.currentMode = maxScreenMode
-        
+            
         self.gridScreen = screen
     }
     
