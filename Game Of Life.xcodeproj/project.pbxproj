@@ -29,7 +29,7 @@
 		CD6B97031CCB6232006A77A5 /* MatrixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixView.swift; sourceTree = "<group>"; };
 		CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		CD6B97071CCBA096006A77A5 /* LoadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
-		CD8B1D721B654BC1004E00A9 /* GameOfLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD8B1D721B654BC1004E00A9 /* Game Of Life.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game Of Life.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8B1D751B654BC1004E00A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD8B1D771B654BC1004E00A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CD8B1D7A1B654BC1004E00A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		CD8B1D731B654BC1004E00A9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CD8B1D721B654BC1004E00A9 /* GameOfLife.app */,
+				CD8B1D721B654BC1004E00A9 /* Game Of Life.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,9 +136,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CD8B1D711B654BC1004E00A9 /* GameOfLife */ = {
+		CD8B1D711B654BC1004E00A9 /* Game Of Life */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CD8B1D841B654BC1004E00A9 /* Build configuration list for PBXNativeTarget "GameOfLife" */;
+			buildConfigurationList = CD8B1D841B654BC1004E00A9 /* Build configuration list for PBXNativeTarget "Game Of Life" */;
 			buildPhases = (
 				CD8B1D6E1B654BC1004E00A9 /* Sources */,
 				CD8B1D6F1B654BC1004E00A9 /* Frameworks */,
@@ -148,9 +148,9 @@
 			);
 			dependencies = (
 			);
-			name = GameOfLife;
+			name = "Game Of Life";
 			productName = GameOfLife;
-			productReference = CD8B1D721B654BC1004E00A9 /* GameOfLife.app */;
+			productReference = CD8B1D721B654BC1004E00A9 /* Game Of Life.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -168,7 +168,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CD8B1D6D1B654BC1004E00A9 /* Build configuration list for PBXProject "GameOfLife" */;
+			buildConfigurationList = CD8B1D6D1B654BC1004E00A9 /* Build configuration list for PBXProject "Game Of Life" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -181,7 +181,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CD8B1D711B654BC1004E00A9 /* GameOfLife */,
+				CD8B1D711B654BC1004E00A9 /* Game Of Life */,
 			);
 		};
 /* End PBXProject section */
@@ -330,7 +330,7 @@
 				INFOPLIST_FILE = GameOfLife/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.nearedge.GameOfLife;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Game Of Life";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -344,7 +344,7 @@
 				INFOPLIST_FILE = GameOfLife/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.nearedge.GameOfLife;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Game Of Life";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -352,7 +352,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CD8B1D6D1B654BC1004E00A9 /* Build configuration list for PBXProject "GameOfLife" */ = {
+		CD8B1D6D1B654BC1004E00A9 /* Build configuration list for PBXProject "Game Of Life" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CD8B1D821B654BC1004E00A9 /* Debug */,
@@ -361,7 +361,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CD8B1D841B654BC1004E00A9 /* Build configuration list for PBXNativeTarget "GameOfLife" */ = {
+		CD8B1D841B654BC1004E00A9 /* Build configuration list for PBXNativeTarget "Game Of Life" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CD8B1D851B654BC1004E00A9 /* Debug */,
