@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD0EA9B71CDCEBB900A96AC8 /* SKMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0EA9B61CDCEBB900A96AC8 /* SKMatrixView.swift */; };
 		CD14F1991B668DB800E36524 /* GameOfLifeMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14F1981B668DB800E36524 /* GameOfLifeMatrix.swift */; };
 		CD6B96FD1CCB5104006A77A5 /* MinimapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */; };
 		CD6B96FF1CCB54C4006A77A5 /* MatrixImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B96FE1CCB54C4006A77A5 /* MatrixImplementations.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD0EA9B61CDCEBB900A96AC8 /* SKMatrixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKMatrixView.swift; sourceTree = "<group>"; };
 		CD14F1981B668DB800E36524 /* GameOfLifeMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOfLifeMatrix.swift; sourceTree = "<group>"; };
 		CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimapView.swift; sourceTree = "<group>"; };
 		CD6B96FE1CCB54C4006A77A5 /* MatrixImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixImplementations.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				CD6B97031CCB6232006A77A5 /* MatrixView.swift */,
 				CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */,
 				CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */,
+				CD0EA9B61CDCEBB900A96AC8 /* SKMatrixView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				CD8B1D781B654BC1004E00A9 /* ViewController.swift in Sources */,
 				CD14F1991B668DB800E36524 /* GameOfLifeMatrix.swift in Sources */,
 				CD6B97061CCB91B8006A77A5 /* RoundedButton.swift in Sources */,
+				CD0EA9B71CDCEBB900A96AC8 /* SKMatrixView.swift in Sources */,
 				CD6B96FD1CCB5104006A77A5 /* MinimapView.swift in Sources */,
 				CD6B97021CCB60E6006A77A5 /* Utilities.swift in Sources */,
 				CD6B97041CCB6232006A77A5 /* MatrixView.swift in Sources */,

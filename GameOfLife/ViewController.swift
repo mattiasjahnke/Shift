@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
     
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
     
     private var seedMatrix = TupleMatrix(width: 100, height: 100)
     private var currentMatrix: TupleMatrix!
-    private let editingGridView = MatrixView<TupleMatrix>()
+    private var editingGridView: SKMatrixView<TupleMatrix>!
     private var gridView = MatrixView<TupleMatrix>()
     
     private var timer: NSTimer?
@@ -85,18 +86,21 @@ class ViewController: UIViewController {
         scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
         
         // ** View to zoom **
-        let zoomView = UIView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
+        //let zoomView = UIView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
+        let zoomView = SKView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
+        zoomView.ignoresSiblingOrder = true
         scrollView.addSubview(zoomView)
         
         // ** Editor **
+        editingGridView = SKMatrixView(size: zoomView.frame.size)
         editingGridView.matrix = seedMatrix
         editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
             self.playPauseButton.enabled = !matrix.isEmpty
         }
-        editingGridView.frame = zoomView.bounds
-        zoomView.addSubview(editingGridView)
+        zoomView.presentScene(editingGridView)
+        //zoomView.addSubview(editingGridView)
         
         // ** "Player" view
         gridView.translatesAutoresizingMaskIntoConstraints = false
