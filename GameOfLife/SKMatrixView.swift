@@ -30,12 +30,14 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
 
         let f = matrix!.frameForPoint(Point(x: 0, y: 0), rect: view.bounds).size.width
         cellSize = CGSize(width: f, height: f)
-        grid = Grid(blockSize: f, rows: Int(view.frame.size.width / f), cols: Int(view.frame.size.height / f))
-        grid.position = CGPointMake (CGRectGetMidX(view.frame),CGRectGetMidY(view.frame))
+        grid = Grid(blockSize: f, rows: Int(view.bounds.size.width / f), cols: Int(view.bounds.size.height / f))
+        grid.position = CGPointMake (CGRectGetMidX(view.bounds),CGRectGetMidY(view.bounds))
         grid.texture!.filteringMode = .Nearest
         addChild(grid)
         
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SKMatrixView.handleTapGesture(_:))))
+        if let _ = matrixUpdated {
+            view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SKMatrixView.handleTapGesture(_:))))
+        }
     }
     
     func handleTapGesture(gesture: UITapGestureRecognizer) {

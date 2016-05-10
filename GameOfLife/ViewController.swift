@@ -34,10 +34,9 @@ class ViewController: UIViewController {
                 
                 airPlayLabel.hidden = false
                 
-                gridView.hidden = false
                 gridView.showGrid = false
                 
-                gridWindow.addSubview(gridView)
+                //gridWindow.addSubview(gridView)
                 gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridView, attribute: .Height, multiplier: 1, constant: 0))
                 gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterX, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterX, multiplier: 1, constant: 0))
                 gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterY, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterY, multiplier: 1, constant: 0))
@@ -50,14 +49,9 @@ class ViewController: UIViewController {
             } else {
                 airPlayLabel.hidden = true
                 gridWindow = nil
-                gridView.hidden = true
                 gridView.showGrid = true
                 
-                let hostView = scrollView.subviews.first!
-                
-                hostView.addSubview(gridView)
-                hostView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
-                hostView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[gridView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["gridView" : gridView]))
+                containerView.presentScene(editingGridView)
             }
         }
     }
@@ -66,13 +60,15 @@ class ViewController: UIViewController {
     private var seedMatrix = TupleMatrix(width: 100, height: 100)
     private var currentMatrix: TupleMatrix!
     private var editingGridView: SKMatrixView<TupleMatrix>!
-    private var gridView = MatrixView<TupleMatrix>()
+    private var gridView: SKMatrixView<TupleMatrix>!
     
     private var timer: NSTimer?
     
     private var isPlaying: Bool {
         return timer != nil
     }
+    
+    private var containerView = SKView()
     
     private var displayedModal: UIViewController?
     private var modalShadowView = UIView()
@@ -86,24 +82,23 @@ class ViewController: UIViewController {
         scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
         
         // ** View to zoom **
-        //let zoomView = UIView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
-        let zoomView = SKView(frame: CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height))
-        zoomView.ignoresSiblingOrder = true
-        scrollView.addSubview(zoomView)
+        containerView.frame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
+        containerView.ignoresSiblingOrder = false
+        scrollView.addSubview(containerView)
         
         // ** Editor **
-        editingGridView = SKMatrixView(size: zoomView.frame.size)
+        editingGridView = SKMatrixView(size: containerView.frame.size)
         editingGridView.matrix = seedMatrix
         editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
             self.playPauseButton.enabled = !matrix.isEmpty
         }
-        zoomView.presentScene(editingGridView)
-        //zoomView.addSubview(editingGridView)
         
         // ** "Player" view
-        gridView.translatesAutoresizingMaskIntoConstraints = false
+        gridView = SKMatrixView(size: containerView.frame.size)
+        gridView.matrix = seedMatrix
+        gridView.showGrid = true
         gridView.userInteractionEnabled = false
         
         // ** Minimap **
@@ -167,15 +162,11 @@ class ViewController: UIViewController {
             timer?.invalidate()
             timer = nil
             gridView.matrix = seedMatrix
-            if gridScreen == UIScreen.mainScreen() {
-                gridView.hidden = true
-            }
+            containerView.presentScene(editingGridView)
         } else {
             currentMatrix = seedMatrix
             gridView.matrix = currentMatrix
-            if gridScreen == UIScreen.mainScreen() {
-                gridView.hidden = false
-            }
+            containerView.presentScene(gridView)
             restartTimer()
         }
         
