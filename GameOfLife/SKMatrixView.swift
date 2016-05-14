@@ -16,7 +16,7 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
     var gridColor = UIColor.lightGrayColor()
     var cellColor = UIColor.whiteColor()
     
-    private var grid: SKSpriteNode!
+    private var grids: [SKSpriteNode]!
     private var nodePool = [SKNode]()
     
     private var cellSize: CGFloat!
@@ -26,24 +26,37 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        if grid == nil {
+        if grids == nil {
+            grids = []
             scaleMode = .ResizeFill
             
             let minSize = max(view.bounds.width, view.bounds.height)
             cellSize = round(minSize / CGFloat(min(matrix!.width, matrix!.height)))
             
-            let gridImage = UIImage(
+            let tileSize = 50
+            
+            let gridTexture = SKTexture(image: UIImage(
                 gridWithBlockSize: cellSize,
-                columns: Int(view.bounds.size.height / cellSize),
-                rows: Int(view.bounds.size.width / cellSize), gridColor: .blueColor())
-            let gridTexture = SKTexture(image: gridImage)
+                columns: tileSize,
+                rows: tileSize, gridColor: .grayColor()))
             
-            grid = SKSpriteNode(texture: gridTexture, color: .blackColor(), size: gridTexture.size())
-            grid.blendMode = .Replace
-            
-            grid.position = CGPointMake(CGRectGetMidX(view.bounds),CGRectGetMidY(view.bounds))
-            grid.texture!.filteringMode = .Nearest
-            addChild(grid)
+            for x in 0...Int(minSize) / tileSize {
+                for y in 0...Int(minSize) / tileSize {
+                    let rect = CGRect(x: CGFloat(x * tileSize) * cellSize,
+                                      y: CGFloat(y * tileSize) * cellSize,
+                                      width: CGFloat(tileSize) * cellSize,
+                                      height: CGFloat(tileSize) * cellSize)
+                    
+                    let grid = SKSpriteNode(texture: gridTexture, color: /*.blackColor()*/.blueColor(), size: gridTexture.size())
+                    
+                    grid.blendMode = .Replace
+                    grid.position = CGPoint(x: CGRectGetMidX(rect), y: CGRectGetMidY(rect))//CGPointMake(CGRectGetMidX(view.bounds),CGRectGetMidY(view.bounds))
+                    grid.texture!.filteringMode = .Nearest
+                    
+                    addChild(grid)
+                    grids.append(grid)
+                }
+            }
             
             if let _ = matrixUpdated {
                 view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SKMatrixView.handleTapGesture(_:))))
@@ -78,14 +91,8 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
         }
         
         while nodePool.count < points.count {
-            let cell = SKShapeNode(rectOfSize: CGSizeMake(cellSize - 1, cellSize - 1))
-            cell.antialiased = false
-            cell.strokeColor = UIColor.clearColor()
-            cell.fillColor = SKColor.whiteColor()
-            cell.blendMode = .Replace
-            cell.zPosition = 1
-            nodePool.append(cell)
-            self.addChild(cell)
+            nodePool.append(SKShapeNode(cellOfSize: CGSizeMake(cellSize - 1, cellSize - 1)))
+            self.addChild(nodePool.last!)
         }
         
         for (index, node) in nodePool.enumerate() {
@@ -96,7 +103,18 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
     }
 }
 
-extension UIImage {
+private extension SKShapeNode {
+    convenience init(cellOfSize size: CGSize) {
+        self.init(rectOfSize: size)
+        antialiased = false
+        strokeColor = UIColor.clearColor()
+        fillColor = SKColor.whiteColor()
+        blendMode = .Replace
+        zPosition = 1
+    }
+}
+
+private extension UIImage {
     convenience init(gridWithBlockSize blockSize: CGFloat, columns: Int, rows: Int, gridColor: UIColor = .grayColor()) {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(columns) * blockSize + 1.0,
