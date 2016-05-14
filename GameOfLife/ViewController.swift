@@ -235,6 +235,8 @@ class ViewController: UIViewController {
                                                        selector: #selector(ViewController.nextGeneration),
                                                        userInfo: nil,
                                                        repeats: true)
+        
+        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     private func setUpMenuIsPlaying(isPlaying: Bool) {
