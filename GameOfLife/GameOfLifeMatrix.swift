@@ -14,7 +14,7 @@ protocol GameOfLifeMatrix: Equatable {
     var activeCells: Set<Point> { get }
     var isEmpty: Bool { get }
     
-    init(width: Int, height: Int)
+    init(width: Int, height: Int, active: Set<Point>)
     
     subscript(point: Point) -> Bool { get set }
 }
@@ -49,7 +49,7 @@ extension GameOfLifeMatrix {
 
 extension GameOfLifeMatrix {
     func incrementedGeneration() -> Self {
-        var next = Self.init(width: width, height: height)
+        var next = Self.init(width: width, height: height, active: [])
         var processed = Set<Point>()
         for cell in activeCells {
             next[cell] = fate(cell)

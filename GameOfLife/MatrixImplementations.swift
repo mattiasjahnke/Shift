@@ -17,9 +17,10 @@ struct TupleMatrix: GameOfLifeMatrix {
     var activeCells: Set<Point> { return set }
     var isEmpty: Bool { return set.isEmpty }
     
-    init(width: Int, height: Int) {
+    init(width: Int, height: Int, active: Set<Point> = []) {
         self.height = height
         self.width = width
+        set = active
     }
     
     subscript(point: Point) -> Bool {

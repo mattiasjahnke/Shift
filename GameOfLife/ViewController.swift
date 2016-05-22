@@ -303,6 +303,26 @@ class ViewController: UIViewController {
     }
 }
 
+extension GameOfLifeMatrix {
+    func save(storedName name: String) throws {
+        var saved = NSUserDefaults.standardUserDefaults().dictionaryForKey("saved-layouts") ?? [:]
+        guard saved[name] == nil else {
+            throw NSError(domain: "", code: 0, userInfo: nil)
+        }
+        saved[name] = ["w" : width, "h" : height, "a" : activeCells.map { [$0.x, $0.y] }]
+    }
+    
+    init?(storedName name: String) {
+        guard let dic = NSUserDefaults.standardUserDefaults().dictionaryForKey("saved-layouts")?[name] as? [String : AnyObject] else {
+            return nil
+        }
+        guard let w = dic["w"] as? Int, h = dic["h"] as? Int, a = dic["a"] as? [[Int]] else {
+            return nil
+        }
+        self.init(width: w, height: h, active: Set(a.map { Point(x: $0[0] , y: $0[1] ) }))
+    }
+}
+
 extension ViewController: UIScrollViewDelegate {
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return scrollView.subviews.first!
