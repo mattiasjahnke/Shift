@@ -12,7 +12,6 @@
 		CD6B96FD1CCB5104006A77A5 /* MinimapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */; };
 		CD6B96FF1CCB54C4006A77A5 /* MatrixImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B96FE1CCB54C4006A77A5 /* MatrixImplementations.swift */; };
 		CD6B97021CCB60E6006A77A5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97011CCB60E6006A77A5 /* Utilities.swift */; };
-		CD6B97041CCB6232006A77A5 /* MatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97031CCB6232006A77A5 /* MatrixView.swift */; };
 		CD6B97061CCB91B8006A77A5 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */; };
 		CD6B97081CCBA096006A77A5 /* LoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6B97071CCBA096006A77A5 /* LoadViewController.swift */; };
 		CD8B1D761B654BC1004E00A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8B1D751B654BC1004E00A9 /* AppDelegate.swift */; };
@@ -28,7 +27,6 @@
 		CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimapView.swift; sourceTree = "<group>"; };
 		CD6B96FE1CCB54C4006A77A5 /* MatrixImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixImplementations.swift; sourceTree = "<group>"; };
 		CD6B97011CCB60E6006A77A5 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		CD6B97031CCB6232006A77A5 /* MatrixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatrixView.swift; sourceTree = "<group>"; };
 		CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		CD6B97071CCBA096006A77A5 /* LoadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
 		CD8B1D721B654BC1004E00A9 /* Shift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +89,6 @@
 		CD14F19F1B66907A00E36524 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CD6B97031CCB6232006A77A5 /* MatrixView.swift */,
 				CD6B96FC1CCB5104006A77A5 /* MinimapView.swift */,
 				CD6B97051CCB91B8006A77A5 /* RoundedButton.swift */,
 				CD0EA9B61CDCEBB900A96AC8 /* SKMatrixView.swift */,
@@ -216,7 +213,6 @@
 				CD0EA9B71CDCEBB900A96AC8 /* SKMatrixView.swift in Sources */,
 				CD6B96FD1CCB5104006A77A5 /* MinimapView.swift in Sources */,
 				CD6B97021CCB60E6006A77A5 /* Utilities.swift in Sources */,
-				CD6B97041CCB6232006A77A5 /* MatrixView.swift in Sources */,
 				CD8B1D761B654BC1004E00A9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
