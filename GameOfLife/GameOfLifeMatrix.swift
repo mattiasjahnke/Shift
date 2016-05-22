@@ -38,7 +38,7 @@ func ==(lhs: Point, rhs: Point) -> Bool {
 
 extension GameOfLifeMatrix {
     func contains(point: Point) -> Bool {
-        return point.x >= 0 && point.y >= 0 && point.x < width - 1 && point.y < height - 1
+        return point.x >= 0 && point.y >= 0 && point.x <= width - 1 && point.y <= height - 1
     }
     
     subscript(x: Int, y: Int) -> Bool {

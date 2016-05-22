@@ -35,7 +35,7 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
             let gridImage = UIImage(
                 gridWithBlockSize: cellSize,
                 columns: Int(view.bounds.size.height / cellSize),
-                rows: Int(view.bounds.size.width / cellSize), gridColor: .blueColor())
+                rows: Int(view.bounds.size.width / cellSize), gridColor: .lightGrayColor())
             let gridTexture = SKTexture(image: gridImage)
             
             grid = SKSpriteNode(texture: gridTexture, color: .blackColor(), size: gridTexture.size())
@@ -93,42 +93,5 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
             node.hidden = false
             node.position = points[index]
         }
-    }
-}
-
-extension UIImage {
-    convenience init(gridWithBlockSize blockSize: CGFloat, columns: Int, rows: Int, gridColor: UIColor = .grayColor()) {
-        // Add 1 to the height and width to ensure the borders are within the sprite
-        let size = CGSize(width: CGFloat(columns) * blockSize + 1.0,
-                          height: CGFloat(rows) * blockSize + 1.0)
-        
-        UIGraphicsBeginImageContext(size)
-        
-        let context = UIGraphicsGetCurrentContext()
-        let bezierPath = UIBezierPath()
-        let offset:CGFloat = 0.5
-        
-        // Draw vertical lines
-        for i in 0...columns {
-            let x = CGFloat(i) * blockSize + offset
-            bezierPath.moveToPoint(CGPoint(x: x, y: 0))
-            bezierPath.addLineToPoint(CGPoint(x: x, y: size.height))
-        }
-        // Draw horizontal lines
-        for i in 0...rows {
-            let y = CGFloat(i) * blockSize + offset
-            bezierPath.moveToPoint(CGPoint(x: 0, y: y))
-            bezierPath.addLineToPoint(CGPoint(x: size.width, y: y))
-        }
-        
-        gridColor.setStroke()
-        bezierPath.lineWidth = 1
-        bezierPath.stroke()
-        CGContextAddPath(context, bezierPath.CGPath)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        self.init(CGImage: image.CGImage!)
     }
 }
