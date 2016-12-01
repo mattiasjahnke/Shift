@@ -10,9 +10,9 @@ import Foundation
 
 // MARK: Tuple Set implemention of a Matrix
 struct TupleMatrix: GameOfLifeMatrix {
-    private(set) var height: Int
-    private(set) var width: Int
-    private var set = Set<Point>()
+    fileprivate(set) var height: Int
+    fileprivate(set) var width: Int
+    fileprivate var set = Set<Point>()
     
     var activeCells: Set<Point> { return set }
     var isEmpty: Bool { return set.isEmpty }

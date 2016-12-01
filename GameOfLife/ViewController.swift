@@ -19,35 +19,35 @@ class ViewController: UIViewController {
     @IBOutlet weak var saveLoadStackView: UIStackView!
     @IBOutlet weak var airPlayLabel: UILabel!
     
-    private let tempoOptions: [(String, NSTimeInterval)] = [("1x", 1),
+    fileprivate let tempoOptions: [(String, TimeInterval)] = [("1x", 1),
                                                             ("2x", 0.5),
                                                             ("4x", 0.25)]
-    private var currentTempoIndex = 0
+    fileprivate var currentTempoIndex = 0
     
-    private var gridScreen: UIScreen! {
+    fileprivate var gridScreen: UIScreen! {
         didSet {
-            if gridScreen != .mainScreen() {
+            if gridScreen != .main {
                 gridWindow = UIWindow(frame: gridScreen.bounds)
                 gridWindow.layer.contentsGravity = kCAGravityResizeAspect
                 gridWindow.screen = gridScreen
-                gridWindow.hidden = false
+                gridWindow.isHidden = false
                 
-                airPlayLabel.hidden = false
+                airPlayLabel.isHidden = false
                 
                 gridView.showGrid = false
                 
                 //gridWindow.addSubview(gridView)
-                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridView, attribute: .Height, multiplier: 1, constant: 0))
-                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterX, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterX, multiplier: 1, constant: 0))
-                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .CenterY, relatedBy: .Equal, toItem: gridWindow, attribute: .CenterY, multiplier: 1, constant: 0))
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .width, relatedBy: .equal, toItem: gridView, attribute: .height, multiplier: 1, constant: 0))
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .centerX, relatedBy: .equal, toItem: gridWindow, attribute: .centerX, multiplier: 1, constant: 0))
+                gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .centerY, relatedBy: .equal, toItem: gridWindow, attribute: .centerY, multiplier: 1, constant: 0))
                 
                 if gridWindow.frame.height < gridWindow.frame.width {
-                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Height, relatedBy: .Equal, toItem: gridWindow, attribute: .Height, multiplier: 1, constant: 0))
+                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .height, relatedBy: .equal, toItem: gridWindow, attribute: .height, multiplier: 1, constant: 0))
                 } else {
-                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .Width, relatedBy: .Equal, toItem: gridWindow, attribute: .Width, multiplier: 1, constant: 0))
+                    gridWindow.addConstraint(NSLayoutConstraint(item: gridView, attribute: .width, relatedBy: .equal, toItem: gridWindow, attribute: .width, multiplier: 1, constant: 0))
                 }
             } else {
-                airPlayLabel.hidden = true
+                airPlayLabel.isHidden = true
                 gridWindow = nil
                 gridView.showGrid = true
                 
@@ -55,34 +55,34 @@ class ViewController: UIViewController {
             }
         }
     }
-    private var gridWindow: UIWindow!
+    fileprivate var gridWindow: UIWindow!
     
-    private var seedMatrix = TupleMatrix(width: 100, height: 100)
-    private var currentMatrix: TupleMatrix!
-    private var editingGridView: SKMatrixView<TupleMatrix>!
-    private var gridView: SKMatrixView<TupleMatrix>!
+    fileprivate var seedMatrix = TupleMatrix(width: 100, height: 100)
+    fileprivate var currentMatrix: TupleMatrix!
+    fileprivate var editingGridView: SKMatrixView<TupleMatrix>!
+    fileprivate var gridView: SKMatrixView<TupleMatrix>!
     
-    private var timer: NSTimer?
+    fileprivate var timer: Timer?
     
-    private var isPlaying: Bool {
+    fileprivate var isPlaying: Bool {
         return timer != nil
     }
     
-    private var containerView = SKView()
+    fileprivate var containerView = SKView()
     
-    private var displayedModal: UIViewController?
-    private var modalShadowView = UIView()
+    fileprivate var displayedModal: UIViewController?
+    fileprivate var modalShadowView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        saveLoadStackView.hidden = true
+        saveLoadStackView.isHidden = true
         
         // ** Scroll view **
-        scrollView.contentSize = CGSizeMake(CGFloat(seedMatrix.width) * 15, CGFloat(seedMatrix.height) * 15)
+        scrollView.contentSize = CGSize(width: CGFloat(seedMatrix.width) * 16, height: CGFloat(seedMatrix.height) * 16)
         
         // ** View to zoom **
-        containerView.frame = CGRectMake(0, 0, scrollView.contentSize.width, scrollView.contentSize.height)
+        containerView.frame = CGRect(x: 0, y: 0, width: scrollView.contentSize.width, height: scrollView.contentSize.height)
         containerView.ignoresSiblingOrder = false
         scrollView.addSubview(containerView)
         
@@ -92,44 +92,44 @@ class ViewController: UIViewController {
         editingGridView.showGrid = true
         editingGridView.matrixUpdated = { matrix in
             self.seedMatrix = matrix
-            self.playPauseButton.enabled = !matrix.isEmpty
+            self.playPauseButton.isEnabled = !matrix.isEmpty
         }
         
         // ** "Player" view
         gridView = SKMatrixView(size: containerView.frame.size)
         gridView.matrix = seedMatrix
         gridView.showGrid = true
-        gridView.userInteractionEnabled = false
+        gridView.isUserInteractionEnabled = false
         
         // ** Minimap **
-        minimap.layer.borderColor = UIColor.whiteColor().CGColor
+        minimap.layer.borderColor = UIColor.white.cgColor
         minimap.layer.borderWidth = 1
         minimap.layer.cornerRadius = 2
         minimap.viewportColor = UIColor(white: 1, alpha: 0.5)
         
         // ** Setup screen **
-        gridScreen = UIScreen.mainScreen()
+        gridScreen = UIScreen.main
         
         // ** Setup menu **
-        playPauseButton.enabled = false
+        playPauseButton.isEnabled = false
         setUpMenuIsPlaying(isPlaying)
         
         // ** Modal **
-        modalShadowView.backgroundColor = .blackColor()
-        modalShadowView.hidden = true
+        modalShadowView.backgroundColor = .black
+        modalShadowView.isHidden = true
         modalShadowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissCurrentModal)))
         view.wrapSubview(modalShadowView)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupOutputScreen()
         updateMiniMap()
     }
     
     func dismissCurrentModal() {
-        displayedModal?.willMoveToParentViewController(nil)
-        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+        displayedModal?.willMove(toParentViewController: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
             if let displayedModal = self.displayedModal {
                 var rect = displayedModal.view.frame
                 rect.origin.y += self.view.frame.height + 10
@@ -138,10 +138,10 @@ class ViewController: UIViewController {
             self.modalShadowView.alpha = 0
         }) { _ in
             self.displayedModal?.removeFromParentViewController()
-            self.displayedModal?.didMoveToParentViewController(nil)
+            self.displayedModal?.didMove(toParentViewController: nil)
             self.displayedModal?.view.removeFromSuperview()
             self.displayedModal = nil
-            self.modalShadowView.hidden = true
+            self.modalShadowView.isHidden = true
         }
     }
     
@@ -157,7 +157,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: User interaction
-    @IBAction func playButtonTapped(sender: UIButton) {
+    @IBAction func playButtonTapped(_ sender: UIButton) {
         if isPlaying {
             timer?.invalidate()
             timer = nil
@@ -173,90 +173,90 @@ class ViewController: UIViewController {
         setUpMenuIsPlaying(isPlaying)
     }
     
-    @IBAction func tempoButtonTapped(sender: UIButton) {
+    @IBAction func tempoButtonTapped(_ sender: UIButton) {
         currentTempoIndex += 1
         if currentTempoIndex >= tempoOptions.count {
             currentTempoIndex = 0
         }
         if isPlaying { restartTimer() }
-        tempoButton.setTitle(tempoOptions[currentTempoIndex].0, forState: .Normal)
+        tempoButton.setTitle(tempoOptions[currentTempoIndex].0, for: UIControlState())
     }
     
-    @IBAction func aboutButtonTapped(sender: UIButton) {
-        guard let vc = storyboard?.instantiateViewControllerWithIdentifier("about") else { return }
+    @IBAction func aboutButtonTapped(_ sender: UIButton) {
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "about") else { return }
         presentModal(viewController: vc)
     }
     
-    @IBAction func saveButtonTapped(sender: UIButton) {
+    @IBAction func saveButtonTapped(_ sender: UIButton) {
         
     }
     
-    @IBAction func loadButtonTapped(sender: UIButton) {
-        guard let vc = storyboard?.instantiateViewControllerWithIdentifier("load") else { return }
+    @IBAction func loadButtonTapped(_ sender: UIButton) {
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "load") else { return }
         presentModal(viewController: vc)
     }
 
     
     // MARK: Privates
-    private func presentModal(viewController vc: UIViewController, size: CGSize? = CGSizeMake(320, 500)) {
+    fileprivate func presentModal(viewController vc: UIViewController, size: CGSize? = CGSize(width: 320, height: 500)) {
         assert(displayedModal == nil)
         guard let size = size else { return }
         
         displayedModal = vc
         
-        vc.willMoveToParentViewController(self)
+        vc.willMove(toParentViewController: self)
         addChildViewController(vc)
         
         vc.view.layer.cornerRadius = 5
-        vc.view.layer.borderColor = UIColor.whiteColor().CGColor
+        vc.view.layer.borderColor = UIColor.white.cgColor
         vc.view.layer.borderWidth = 1
         
-        vc.view.frame = CGRectMake(view.frame.width / 2 - size.width / 2, view.frame.height + 10, size.width, size.height)
+        vc.view.frame = CGRect(x: view.frame.width / 2 - size.width / 2, y: view.frame.height + 10, width: size.width, height: size.height)
         
         view.addSubview(vc.view)
         modalShadowView.alpha = 0
-        modalShadowView.hidden = false
+        modalShadowView.isHidden = false
         
-        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
             var rect = vc.view.frame
             rect.origin.y = self.view.frame.height / 2 - rect.height / 2
             vc.view.frame = rect
             self.modalShadowView.alpha = 0.6
         }) { _ in
-            vc.didMoveToParentViewController(self)
+            vc.didMove(toParentViewController: self)
         }
     }
     
-    private func restartTimer() {
+    fileprivate func restartTimer() {
         timer?.invalidate()
         timer = nil
-        timer = NSTimer.scheduledTimerWithTimeInterval(tempoOptions[currentTempoIndex].1,
+        timer = Timer.scheduledTimer(timeInterval: tempoOptions[currentTempoIndex].1,
                                                        target: self,
                                                        selector: #selector(ViewController.nextGeneration),
                                                        userInfo: nil,
                                                        repeats: true)
         
-        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+        RunLoop.current.add(timer!, forMode: RunLoopMode.commonModes)
     }
     
-    private func setUpMenuIsPlaying(isPlaying: Bool) {
-        playPauseButton.setTitle(isPlaying ? "Stop" : "Play", forState: .Normal)
-        rightStackView.hidden = isPlaying
+    fileprivate func setUpMenuIsPlaying(_ isPlaying: Bool) {
+        playPauseButton.setTitle(isPlaying ? "Stop" : "Play", for: UIControlState())
+        rightStackView.isHidden = isPlaying
     }
     
-    private func setupOutputScreen() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserverForName(UIScreenDidConnectNotification, object: nil, queue: nil) { notification in
+    fileprivate func setupOutputScreen() {
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: NSNotification.Name.UIScreenDidConnect, object: nil, queue: nil) { notification in
             if let screen = notification.object as? UIScreen {
                 self.setupMirroringForScreen(screen)
             }
         }
         
-        nc.addObserverForName(UIScreenDidDisconnectNotification, object: nil, queue: nil) { notification in
+        nc.addObserver(forName: NSNotification.Name.UIScreenDidDisconnect, object: nil, queue: nil) { notification in
             self.disableMirroringOnCurrentScreen() // Check if correct screen?
         }
         
-        nc.addObserverForName(UIScreenModeDidChangeNotification, object: nil, queue: nil) { notification in
+        nc.addObserver(forName: NSNotification.Name.UIScreenModeDidChange, object: nil, queue: nil) { notification in
             self.disableMirroringOnCurrentScreen() // Check if correct screen?
             if let screen = notification.object as? UIScreen {
                 self.setupMirroringForScreen(screen)
@@ -264,15 +264,15 @@ class ViewController: UIViewController {
         }
 
         // Setup screen mirroring for an existing screen
-        let connectedScreens = UIScreen.screens()
+        let connectedScreens = UIScreen.screens
         if connectedScreens.count > 1 {
-            if let screen = connectedScreens.filter({ x in x != UIScreen.mainScreen() }).first {
+            if let screen = connectedScreens.filter({ x in x != UIScreen.main }).first {
                 setupMirroringForScreen(screen)
             }
         }
     }
     
-    private func setupMirroringForScreen(screen: UIScreen) {
+    fileprivate func setupMirroringForScreen(_ screen: UIScreen) {
         // Find max resolution
         var max: (CGFloat, CGFloat) = (0.0, 0.0)
         var maxScreenMode: UIScreenMode?
@@ -291,11 +291,11 @@ class ViewController: UIViewController {
         self.gridScreen = screen
     }
     
-    private func disableMirroringOnCurrentScreen() {
-        self.gridScreen = UIScreen.mainScreen()
+    fileprivate func disableMirroringOnCurrentScreen() {
+        self.gridScreen = UIScreen.main
     }
     
-    private func updateMiniMap() {
+    fileprivate func updateMiniMap() {
         var viewport = scrollView.bounds
         viewport.origin.x = scrollView.contentOffset.x
         viewport.origin.y = scrollView.contentOffset.y
@@ -305,7 +305,7 @@ class ViewController: UIViewController {
 
 extension GameOfLifeMatrix {
     func save(storedName name: String) throws {
-        var saved = NSUserDefaults.standardUserDefaults().dictionaryForKey("saved-layouts") ?? [:]
+        var saved = UserDefaults.standard.dictionary(forKey: "saved-layouts") ?? [:]
         guard saved[name] == nil else {
             throw NSError(domain: "", code: 0, userInfo: nil)
         }
@@ -313,10 +313,10 @@ extension GameOfLifeMatrix {
     }
     
     init?(storedName name: String) {
-        guard let dic = NSUserDefaults.standardUserDefaults().dictionaryForKey("saved-layouts")?[name] as? [String : AnyObject] else {
+        guard let dic = UserDefaults.standard.dictionary(forKey: "saved-layouts")?[name] as? [String : AnyObject] else {
             return nil
         }
-        guard let w = dic["w"] as? Int, h = dic["h"] as? Int, a = dic["a"] as? [[Int]] else {
+        guard let w = dic["w"] as? Int, let h = dic["h"] as? Int, let a = dic["a"] as? [[Int]] else {
             return nil
         }
         self.init(width: w, height: h, active: Set(a.map { Point(x: $0[0] , y: $0[1] ) }))
@@ -324,15 +324,15 @@ extension GameOfLifeMatrix {
 }
 
 extension ViewController: UIScrollViewDelegate {
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return scrollView.subviews.first!
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         updateMiniMap()
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateMiniMap()
     }
 }

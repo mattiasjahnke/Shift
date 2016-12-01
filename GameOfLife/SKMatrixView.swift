@@ -13,21 +13,25 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
     var matrixUpdated: ((MatrixType) -> ())?
     
     var showGrid = false
-    var gridColor = UIColor.lightGrayColor()
-    var cellColor = UIColor.whiteColor()
+    var gridColor = UIColor.lightGray
+    var cellColor = UIColor.white
     
-    private var grid: SKSpriteNode!
-    private var nodePool = [SKNode]()
+    fileprivate var grid: SKSpriteNode!
+    fileprivate var nodePool = [SKNode]()
     
-    private var cellSize: CGFloat!
+    fileprivate var cellSize: CGFloat!
     
     override init(size: CGSize) {
         super.init(size: size)
     }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         if grid == nil {
-            scaleMode = .ResizeFill
+            scaleMode = .resizeFill
             
             let minSize = max(view.bounds.width, view.bounds.height)
             cellSize = round(minSize / CGFloat(min(matrix!.width, matrix!.height)))
@@ -35,14 +39,14 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
             let gridImage = UIImage(
                 gridWithBlockSize: cellSize,
                 columns: Int(view.bounds.size.height / cellSize),
-                rows: Int(view.bounds.size.width / cellSize), gridColor: .lightGrayColor())
+                rows: Int(view.bounds.size.width / cellSize), gridColor: .lightGray)
             let gridTexture = SKTexture(image: gridImage)
             
-            grid = SKSpriteNode(texture: gridTexture, color: .blackColor(), size: gridTexture.size())
-            grid.blendMode = .Replace
+            grid = SKSpriteNode(texture: gridTexture, color: .black, size: gridTexture.size())
+            grid.blendMode = .replace
             
-            grid.position = CGPointMake(CGRectGetMidX(view.bounds),CGRectGetMidY(view.bounds))
-            grid.texture!.filteringMode = .Nearest
+            grid.position = CGPoint(x: view.bounds.midX,y: view.bounds.midY)
+            grid.texture!.filteringMode = .nearest
             addChild(grid)
             
             if let _ = matrixUpdated {
@@ -51,12 +55,12 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
         }
     }
     
-    func handleTapGesture(gesture: UITapGestureRecognizer) {
+    func handleTapGesture(_ gesture: UITapGestureRecognizer) {
         guard matrix != nil else { return }
         
-        let touchPoint = gesture.locationInView(gesture.view)
-        let point = Point(x: Int((touchPoint.x - touchPoint.x % cellSize) / cellSize),
-                          y: Int((touchPoint.y - touchPoint.y % cellSize) / cellSize))
+        let touchPoint = gesture.location(in: gesture.view)
+        let point = Point(x: Int((touchPoint.x - touchPoint.x.truncatingRemainder(dividingBy: cellSize)) / cellSize),
+                          y: Int((touchPoint.y - touchPoint.y.truncatingRemainder(dividingBy: cellSize)) / cellSize))
         
         if matrix!.contains(point) {
             matrix![point] = !matrix![point]
@@ -66,7 +70,7 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
         }
     }
     
-    override func update(currentTime: NSTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
         
         let points = matrix!.activeCells.map { point -> CGPoint in
@@ -78,19 +82,19 @@ class SKMatrixView<MatrixType: GameOfLifeMatrix>: SKScene {
         }
         
         while nodePool.count < points.count {
-            let cell = SKShapeNode(rectOfSize: CGSizeMake(cellSize - 1, cellSize - 1))
-            cell.antialiased = false
-            cell.strokeColor = UIColor.clearColor()
-            cell.fillColor = SKColor.whiteColor()
-            cell.blendMode = .Replace
+            let cell = SKShapeNode(rectOf: CGSize(width: cellSize - 1, height: cellSize - 1))
+            cell.isAntialiased = false
+            cell.strokeColor = UIColor.clear
+            cell.fillColor = SKColor.white
+            cell.blendMode = .replace
             cell.zPosition = 1
             nodePool.append(cell)
             self.addChild(cell)
         }
         
-        for (index, node) in nodePool.enumerate() {
-            guard index < points.count else { node.hidden = true; continue }
-            node.hidden = false
+        for (index, node) in nodePool.enumerated() {
+            guard index < points.count else { node.isHidden = true; continue }
+            node.isHidden = false
             node.position = points[index]
         }
     }

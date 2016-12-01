@@ -14,23 +14,23 @@ class MinimapView: UIView {
         didSet { super.backgroundColor = backgroundColor; setNeedsDisplay() }
     }
     
-    var viewportColor = UIColor.redColor() {
+    var viewportColor = UIColor.red {
         didSet { setNeedsDisplay() }
     }
     
-    private var viewport = CGRect.zero
-    private var worldSize = CGSize.zero
+    fileprivate var viewport = CGRect.zero
+    fileprivate var worldSize = CGSize.zero
     
-    func renderMinimap(viewport: CGRect, worldSize: CGSize) {
+    func renderMinimap(_ viewport: CGRect, worldSize: CGSize) {
         self.viewport = viewport
         self.worldSize = worldSize
         setNeedsDisplay()
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, backgroundColor?.CGColor ?? UIColor.blackColor().CGColor)
-        CGContextFillRect(context, rect)
+        context?.setFillColor(backgroundColor?.cgColor ?? UIColor.black.cgColor)
+        context?.fill(rect)
         
         // Scale
         let scaleX = rect.width / worldSize.width
@@ -41,14 +41,14 @@ class MinimapView: UIView {
                                 width: viewport.width * scaleX,
                                 height: viewport.height * scaleY)
         
-        CGContextSetLineWidth(context, 1)
-        CGContextSetStrokeColorWithColor(context, viewportColor.CGColor)
-        CGContextAddRect(context, scaledRect)
-        CGContextStrokePath(context)
+        context?.setLineWidth(1)
+        context?.setStrokeColor(viewportColor.cgColor)
+        context?.addRect(scaledRect)
+        context?.strokePath()
     }
     
     // Pass through any touches
-    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return false
     }
 }

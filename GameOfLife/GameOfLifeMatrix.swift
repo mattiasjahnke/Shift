@@ -21,15 +21,13 @@ protocol GameOfLifeMatrix: Equatable {
 
 struct Point: Hashable, Equatable {
     let x: Int, y: Int
-    private let hash: Int
     
     init(x: Int = 0, y: Int = 0) {
         self.x = x
         self.y = y
-        hash = "\(x.hashValue)\(y.hashValue)".hashValue
     }
     
-    var hashValue: Int { return hash }
+    var hashValue: Int { return "\(x.hashValue)\(y.hashValue)".hashValue }
 }
 
 func ==(lhs: Point, rhs: Point) -> Bool {
@@ -37,7 +35,7 @@ func ==(lhs: Point, rhs: Point) -> Bool {
 }
 
 extension GameOfLifeMatrix {
-    func contains(point: Point) -> Bool {
+    func contains(_ point: Point) -> Bool {
         return point.x >= 0 && point.y >= 0 && point.x <= width - 1 && point.y <= height - 1
     }
     
@@ -64,7 +62,7 @@ extension GameOfLifeMatrix {
         return next
     }
     
-    private func fate(point: Point) -> Bool {
+    fileprivate func fate(_ point: Point) -> Bool {
         let activeNeighbours = point.adjecentPoints.filter { self.contains($0) && self[$0] }.count
         switch activeNeighbours {
         case 3 where self[point] == false:      // Dead cell comes alive
